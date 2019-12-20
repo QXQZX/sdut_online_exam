@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdut.onlinejudge.mapper.ProblemMapper">
+
+
+    <select id="fetchSingleSelects" resultType="singleSelect">
+        SELECT * FROM singleSelects WHERE
+        spid >= (SELECT floor(RAND() * (SELECT MAX(spid) FROM singleSelects)))
+        ORDER BY spid LIMIT 0, 5
+    </select>
+
+    <select id="fetchMultiSelects" resultType="multiSelect">
+        SELECT * FROM multiSelects WHERE
+        mpid >= (SELECT floor(RAND() * (SELECT MAX(mpid) FROM multiSelects)))
+        ORDER BY mpid LIMIT 0, 5
+    </select>
+
+    <select id="fetchJudgeProblem" resultType="judgeProblem">
+        SELECT * FROM judgeProblems WHERE
+        jpid >= (SELECT floor(RAND() * (SELECT MAX(jpid) FROM judgeProblems)))
+        ORDER BY jpid LIMIT 0, 5
+    </select>
+</mapper>

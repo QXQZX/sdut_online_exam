@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdut.onlinejudge.mapper.ContestMapper">
+
+
+    <select id="findAll" resultType="contest">
+        select cid, cname, startTime, endTime, status from contests
+    </select>
+
+    <update id="deployContest" parameterType="contest">
+        update contests
+        set problems=#{problems}, answers=#{answers}
+        where cid = 3
+    </update>
+
+    <select id="getContestByCid" resultType="string" parameterType="int">
+        select problems from contests where cid=#{cid}
+    </select>
+
+    <select id="getAnswerByCid" resultType="string" parameterType="int">
+        select answers from contests where cid=#{cid}
+    </select>
+</mapper>

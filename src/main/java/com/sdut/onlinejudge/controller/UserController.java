@@ -2,6 +2,8 @@ package com.sdut.onlinejudge.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.ResultKit;
 import com.sdut.onlinejudge.model.User;
@@ -70,6 +72,19 @@ public class UserController {
         resultKit.setMessage("登录成功");
         resultKit.setData(allUsers);
         return resultKit;
+    }
+
+    @RequestMapping(value = "getPerson")
+    public List<UserInfo> getSomePerson(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
+        // pageNum:表示第几页  pageSize:表示一页展示的数据
+        String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
+        PageHelper.startPage(pageNum, 5, orderBy);
+        List<UserInfo> allUsers = userService.findAllUsers();
+        System.out.println(allUsers);
+        // 将查询到的数据封装到PageInfo对象
+        PageInfo<UserInfo> pageInfo = new PageInfo(allUsers, 5);
+        // 分割数据成功
+        return allUsers;
     }
 
     @GetMapping("info/{uid}")

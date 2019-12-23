@@ -42,16 +42,6 @@ public class ContestController {
         return resultKit;
     }
 
-    @GetMapping("deploy")
-    @ResponseBody
-    public ResultKit deployNewContest() {
-        ResultKit<Integer> resultKit = new ResultKit<>();
-        int i = contestService.deployContest();
-        resultKit.setData(i);
-        resultKit.setCode(ResultCode.SUCCESS.code());
-        resultKit.setMessage("新测试发布成功");
-        return resultKit;
-    }
 
     @GetMapping("cid/{cid}")
     @ResponseBody
@@ -122,14 +112,6 @@ public class ContestController {
         resultKit.setData(result);
         return resultKit;
     }
-//    @GetMapping("test")
-//    @ResponseBody
-//    public String test() {
-//        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-//        ops.set("username", "devhui");
-//        return ops.get("username");
-//    }
-
 
     private int judgeCore(Map uAnswer, Map answer) {
         int socre = 0;

@@ -3,7 +3,7 @@ package com.sdut.onlinejudge.utils;
 import com.sdut.onlinejudge.model.CheckResult;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import io.jsonwebtoken.*;
-import sun.tools.jstat.Token;
+//import sun.tools.jstat.Token;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;

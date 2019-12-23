@@ -4,20 +4,20 @@
 
 
     <select id="fetchSingleSelects" resultType="singleSelect">
-        SELECT * FROM singleSelects WHERE
-        spid >= (SELECT floor(RAND() * (SELECT MAX(spid) FROM singleSelects)))
+        SELECT * FROM single_selects WHERE
+        spid >= (SELECT floor(RAND() * (SELECT MAX(spid) FROM single_selects)))
         ORDER BY spid LIMIT 0, 5
     </select>
 
     <select id="fetchMultiSelects" resultType="multiSelect">
-        SELECT * FROM multiSelects WHERE
-        mpid >= (SELECT floor(RAND() * (SELECT MAX(mpid) FROM multiSelects)))
+        SELECT * FROM multi_selects WHERE
+        mpid >= (SELECT floor(RAND() * (SELECT MAX(mpid) FROM multi_selects)))
         ORDER BY mpid LIMIT 0, 5
     </select>
 
     <select id="fetchJudgeProblem" resultType="judgeProblem">
-        SELECT * FROM judgeProblems WHERE
-        jpid >= (SELECT floor(RAND() * (SELECT MAX(jpid) FROM judgeProblems)))
+        SELECT * FROM judge_problems WHERE
+        jpid >= (SELECT floor(RAND() * (SELECT MAX(jpid) FROM judge_problems)))
         ORDER BY jpid LIMIT 0, 5
     </select>
 </mapper>

@@ -13,10 +13,13 @@ import java.util.Map;
 public interface ContestService {
     // 获取所有测试信息
     List<Contest> findAll();
+
     // 根据cid获取测试题目信息
     Map<String, Object> getContestByCid(int cid);
+
     // 发布新的测试
     int deployContest();
+
     // 根据cid获取答案信息
     Map<String, Object> getAnswerByCid(int cid);
 }

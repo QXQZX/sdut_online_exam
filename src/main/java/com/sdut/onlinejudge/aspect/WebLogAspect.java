@@ -1,6 +1,5 @@
 package com.sdut.onlinejudge.aspect;
 
-
 import com.sdut.onlinejudge.config.DruidConfiguration;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;

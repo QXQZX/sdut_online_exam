@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface ContestService {
     // 获取所有测试信息
-    List<Contest> findAll();
+    List<Contest> findAll(String keyWords);
 
     // 根据cid获取测试题目信息
     Map<String, Object> getContestByCid(int cid);

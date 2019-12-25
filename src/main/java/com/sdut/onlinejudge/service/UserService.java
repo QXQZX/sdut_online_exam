@@ -16,8 +16,9 @@ public interface UserService {
     User loginCheck(String username, String password);
 
     // 获取所有用户信息
-    List<UserInfo> findAllUsers();
+    List<UserInfo> findAllUsers(String Uname, String CollegeName);
 
+    // 注册
     int register(User user);
 
     // 通过用户名获取单个用户信息
@@ -31,4 +32,5 @@ public interface UserService {
 
     // 反馈bug 和 建议
     int addFeedBack(FeedBack feedBack);
+
 }

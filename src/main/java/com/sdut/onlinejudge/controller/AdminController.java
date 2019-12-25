@@ -63,4 +63,26 @@ public class AdminController {
     }
 
 
+    @PostMapping("updateUserInfo/{uid}")
+    @ResponseBody
+    public ResultKit updateUserInfo(@PathVariable("uid") String uid, @RequestBody String param) {
+
+        return null;
+    }
+
+    @GetMapping("deleteUser/{uid}")
+    @ResponseBody
+    public ResultKit delUser(@PathVariable("uid") String uid) {
+        ResultKit resultKit = new ResultKit();
+        int i = adminService.deleteUser(uid);
+        System.out.println("删除标志" + i);
+        resultKit.setCode(ResultCode.WRONG_UP.code());
+        resultKit.setMessage("删除用户失败！");
+        if (i == 1) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("删除用户成功！");
+        }
+        return resultKit;
+    }
+
 }

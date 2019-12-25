@@ -16,4 +16,5 @@ public class StatKit {
     private int singleSelectNum;
     private int judgeProblemNum;
     private int multiSelectNum;
+    private int submitNum;
 }

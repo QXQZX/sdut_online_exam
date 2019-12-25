@@ -7,8 +7,19 @@
         select * from user where username=#{username} and password=#{password}
     </select>
 
-    <select id="findAllUsers" resultType="userInfo">
+    <select id="findAllUsers" parameterType="string" resultType="userInfo">
         select username, name, gender, college, score, times from userInfo
+        <where>
+            <if test="Uname != null">
+                <bind name="uname" value="'%' + Uname + '%'"/>
+                and name like #{uname}
+            </if>
+            <if test="CollegeName != null">
+                <bind name="collegeName" value="'%' + CollegeName + '%'"/>
+                and college like #{collegeName}
+            </if>
+        </where>
+
     </select>
 
     <select id="getUserInfo" parameterType="string" resultType="userInfo">

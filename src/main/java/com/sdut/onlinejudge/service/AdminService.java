@@ -11,6 +11,9 @@ import com.sdut.onlinejudge.model.Admin;
 
 
 public interface AdminService {
-    // 登陆检查
+    // 管理员登陆检查
     Admin loginCheck(String username, String password);
+
+    // 删除用户
+    int deleteUser(String username);
 }

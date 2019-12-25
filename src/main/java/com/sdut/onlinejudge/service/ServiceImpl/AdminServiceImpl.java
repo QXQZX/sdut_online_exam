@@ -22,4 +22,9 @@ public class AdminServiceImpl implements AdminService {
     public Admin loginCheck(String username, String password) {
         return adminMapper.loginCheck(username, password);
     }
+
+    @Override
+    public int deleteUser(String username) {
+        return adminMapper.deleteUser(username);
+    }
 }

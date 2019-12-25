@@ -56,36 +56,35 @@ public class UserController {
 
     @GetMapping("standing")
     @ResponseBody
-    public ResultKit<List> getStanding() {
-        ResultKit<List> resultKit = new ResultKit<>();
-        List<UserInfo> allUsers = userService.findAllUsers();
+    public ResultKit getStanding(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                 @RequestParam(value = "name", required = false) String name,
+                                 @RequestParam(value = "college", required = false) String college) {
+        ResultKit<Map> resultKit = new ResultKit<>();
+        // pageNum:表示第几页  pageSize:表示一页展示的数据
+        String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
+        PageHelper.startPage(pageNum, 10, orderBy);
 
-        Collections.sort(allUsers, new Comparator<UserInfo>() {
-            @Override
-            public int compare(UserInfo o1, UserInfo o2) {
-                return o2.getScore() - o1.getScore();
-            }
-        });
-        System.out.println(allUsers);
+        List<UserInfo> allUsers = userService.findAllUsers(name, college);
+        // 将查询到的数据封装到PageInfo对象
+        PageInfo<UserInfo> pageInfo = new PageInfo(allUsers, 10);
+        // 分割数据成功
+
+        long total = pageInfo.getTotal();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", total);
+        map.put("pageInfo", allUsers);
 
         resultKit.setCode(ResultCode.SUCCESS.code());
-        resultKit.setMessage("登录成功");
-        resultKit.setData(allUsers);
+        resultKit.setMessage("获取成功");
+        resultKit.setData(map);
         return resultKit;
     }
 
-    @RequestMapping(value = "getPerson")
-    public List<UserInfo> getSomePerson(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
-        // pageNum:表示第几页  pageSize:表示一页展示的数据
-        String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
-        PageHelper.startPage(pageNum, 5, orderBy);
-        List<UserInfo> allUsers = userService.findAllUsers();
-        System.out.println(allUsers);
-        // 将查询到的数据封装到PageInfo对象
-        PageInfo<UserInfo> pageInfo = new PageInfo(allUsers, 5);
-        // 分割数据成功
-        return allUsers;
-    }
+//    @RequestMapping(value = "getPerson")
+//    public List<UserInfo> getSomePerson() {
+//
+//    }
 
     @GetMapping("info/{uid}")
     @ResponseBody

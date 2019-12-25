@@ -1,6 +1,8 @@
 package com.sdut.onlinejudge.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sdut.onlinejudge.model.Contest;
 import com.sdut.onlinejudge.model.ResultKit;
 import com.sdut.onlinejudge.model.Submit;
@@ -33,15 +35,29 @@ public class ContestController {
 
     @GetMapping("all")
     @ResponseBody
-    public ResultKit getAllContest(HttpServletRequest req) {
-        ResultKit<List> resultKit = new ResultKit<>();
-        List<Contest> all = contestService.findAll();
-        resultKit.setData(all);
+    public ResultKit getAllContest(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                   @RequestParam(value = "keyWords", required = false) String keyWords) {
+        ResultKit<Map> resultKit = new ResultKit<>();
+        // pageNum:表示第几页  pageSize:表示一页展示的数据
+        String orderBy = "cid" + " desc";//按照（数据库）排序字段 倒序 排序
+        PageHelper.startPage(pageNum, 2, orderBy);
+
+        List<Contest> allContest = contestService.findAll(keyWords);
+        // 将查询到的数据封装到PageInfo对象
+        PageInfo<Contest> pageInfo = new PageInfo(allContest, 2);
+        // 分割数据成功
+
+        long total = pageInfo.getTotal();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", total);
+        map.put("pageInfo", allContest);
+
+        resultKit.setData(map);
         resultKit.setCode(ResultCode.SUCCESS.code());
         resultKit.setMessage("获取全部比赛信息成功");
         return resultKit;
     }
-
 
     @GetMapping("cid/{cid}")
     @ResponseBody

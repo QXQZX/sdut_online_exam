@@ -13,4 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface AdminMapper {
     // 登陆检查
     Admin loginCheck(String username, String password);
+
+    // 删除用户
+    int deleteUser(String username);
 }

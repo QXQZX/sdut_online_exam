@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface ContestMapper {
-    List<Contest> findAll();
+    List<Contest> findAll(String keyWords);
 
     int deployContest(Contest c);
 

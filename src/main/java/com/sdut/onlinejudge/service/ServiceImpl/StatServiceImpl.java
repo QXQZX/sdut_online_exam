@@ -19,8 +19,6 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public StatKit getStat() {
-        StatKit stat = statMapper.getStat();
-        System.out.println(stat);
-        return stat;
+        return statMapper.getStat();
     }
 }

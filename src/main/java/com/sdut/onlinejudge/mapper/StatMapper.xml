@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sdut.onlinejudge.mapper.StatMapper">
+
     <select id="getStat" resultType="statKit">
         select * from(
             (select count(*) as userNum from user) a,
             (select count(*) as contestNum from contests) b,
             (select count(*) as singleSelectNum from single_selects) c,
             (select count(*) as judgeProblemNum from judge_problems) d,
-            (select count(*) as multiSelectNum from multi_selects) e
+            (select count(*) as multiSelectNum from multi_selects) e,
+            (select count(*) as submitNum from submits) f
         )
     </select>
 

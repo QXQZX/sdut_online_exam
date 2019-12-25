@@ -33,8 +33,8 @@ public class ContestServiceImpl implements ContestService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public List<Contest> findAll() {
-        return contestMapper.findAll();
+    public List<Contest> findAll(String keyWords) {
+        return contestMapper.findAll(keyWords);
     }
 
     @Override

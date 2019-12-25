@@ -18,7 +18,7 @@ public interface UserMapper {
     User loginCheck(String username, String password);
 
     // 获取所有用户信息
-    List<UserInfo> findAllUsers();
+    List<UserInfo> findAllUsers(String Uname, String CollegeName);
 
     // 注册
     int register(User user);

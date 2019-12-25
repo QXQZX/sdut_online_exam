@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserInfo> findAllUsers() {
-        return userMapper.findAllUsers();
+    public List<UserInfo> findAllUsers(String Uname, String CollegeName) {
+        return userMapper.findAllUsers(Uname, CollegeName);
     }
 
     @Override
@@ -56,5 +56,6 @@ public class UserServiceImpl implements UserService {
     public int addFeedBack(FeedBack feedBack) {
         return userMapper.addFeedBack(feedBack);
     }
+
 
 }

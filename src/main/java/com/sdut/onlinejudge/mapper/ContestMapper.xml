@@ -3,8 +3,12 @@
 <mapper namespace="com.sdut.onlinejudge.mapper.ContestMapper">
 
 
-    <select id="findAll" resultType="contest">
+    <select id="findAll" parameterType="string" resultType="contest">
         select cid, cname, startTime, endTime, status from contests
+        <if test="keyWords != null">
+            <bind name="pattern" value="'%' + keyWords + '%'"/>
+            where cname LIKE #{pattern}
+        </if>
     </select>
 
     <update id="deployContest" parameterType="contest">

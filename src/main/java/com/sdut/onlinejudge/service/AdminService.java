@@ -1,6 +1,8 @@
 package com.sdut.onlinejudge.service;
 
-import com.sdut.onlinejudge.model.Admin;
+import com.sdut.onlinejudge.model.*;
+
+import java.util.List;
 
 /**
  * @Author: Devhui
@@ -16,4 +18,18 @@ public interface AdminService {
 
     // 删除用户
     int deleteUser(String username);
+
+    // 更新用户信息
+    int updateUserInfo(UserInfo userInfo);
+
+    // 添加题目
+    int addJudgeProblem(JudgeProblem judgeProblem);
+
+    int addSingleSelect(SingleSelect select);
+
+    int addMultiSelect(MultiSelect select);
+
+    // 获取每场比赛做题情况
+    List<Submit> getContestInfo(String cid);
+
 }

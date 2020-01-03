@@ -11,7 +11,7 @@
     </select>
 
     <insert id="addSubmit" parameterType="submit">
-        insert into submits values (#{uid}, #{cid}, #{answers}, #{score})
+        insert into submits values (#{uid}, #{cid}, #{answers}, #{score}, #{submitTime})
     </insert>
 
 

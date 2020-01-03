@@ -61,9 +61,10 @@ public class UserController {
                                  @RequestParam(value = "college", required = false) String college) {
         ResultKit<Map> resultKit = new ResultKit<>();
         // pageNum:表示第几页  pageSize:表示一页展示的数据
-        String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
-        PageHelper.startPage(pageNum, 10, orderBy);
-
+//        String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
+//        PageHelper.startPage(pageNum, 10, orderBy);
+        PageHelper.startPage(pageNum, 10);
+        System.out.println("name" + name + "college" + college);
         List<UserInfo> allUsers = userService.findAllUsers(name, college);
         // 将查询到的数据封装到PageInfo对象
         PageInfo<UserInfo> pageInfo = new PageInfo(allUsers, 10);
@@ -80,11 +81,6 @@ public class UserController {
         resultKit.setData(map);
         return resultKit;
     }
-
-//    @RequestMapping(value = "getPerson")
-//    public List<UserInfo> getSomePerson() {
-//
-//    }
 
     @GetMapping("info/{uid}")
     @ResponseBody

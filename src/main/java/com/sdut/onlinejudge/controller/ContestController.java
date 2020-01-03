@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,10 +71,14 @@ public class ContestController {
         return resultKit;
     }
 
-    @PostMapping("submit/cid/{cid}/{uid}")
+    @PostMapping("submit/cid/{cid}/{uid}/")
     @ResponseBody
     public ResultKit submitContest(@PathVariable("uid") String uid,
-                                   @PathVariable("cid") int cid, @RequestBody String userAns) {
+                                   @PathVariable("cid") int cid,
+                                   @RequestParam(value = "time", required = false) String date,
+                                   @RequestBody String userAns) {
+        System.out.println(date);
+        Date submitTime = JSON.parseObject(date, Date.class);
         ResultKit<Integer> resultKit = new ResultKit();
         if (submitService.hasSubmit(uid, cid) == null) {
             Map userAnsMap = JSON.parseObject(userAns, Map.class);
@@ -86,6 +91,7 @@ public class ContestController {
             submit.setCid(cid);
             submit.setAnswers(userAns);
             submit.setScore(score);
+            submit.setSubmitTime(submitTime);
 
             int i = submitService.addSubmit(submit);
             int addScore = submitService.addScore(score, uid);

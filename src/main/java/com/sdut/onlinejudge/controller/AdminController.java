@@ -10,14 +10,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sdut.onlinejudge.model.Admin;
 import com.sdut.onlinejudge.model.ResultKit;
+import com.sdut.onlinejudge.model.UserInfo;
 import com.sdut.onlinejudge.service.AdminService;
 import com.sdut.onlinejudge.service.ContestService;
+import com.sdut.onlinejudge.service.UserService;
 import com.sdut.onlinejudge.utils.JwtUtils;
 import com.sdut.onlinejudge.utils.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,6 +31,9 @@ public class AdminController {
 
     @Autowired
     ContestService contestService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("login")
     @ResponseBody
@@ -51,7 +57,7 @@ public class AdminController {
         return resultKit;
     }
 
-    @GetMapping("deploy")
+    @PostMapping("deploy")
     @ResponseBody
     public ResultKit deployNewContest(@RequestBody String param) {
         ResultKit<Integer> resultKit = new ResultKit<>();
@@ -83,6 +89,38 @@ public class AdminController {
             resultKit.setMessage("删除用户成功！");
         }
         return resultKit;
+    }
+
+    @GetMapping("getPersons")
+    public ResultKit getAllPerson() {
+        ResultKit<List> resultKit = new ResultKit<>();
+        List<UserInfo> allUsers = userService.findAllUsers(null, null);
+        resultKit.setCode(ResultCode.SUCCESS.code());
+        resultKit.setMessage("获取成功");
+        resultKit.setData(allUsers);
+        return resultKit;
+    }
+
+
+    @PostMapping("addJudgeProblem")
+    @ResponseBody
+    public ResultKit addJudgeProblem(@RequestBody String param) {
+
+        return null;
+    }
+
+    @PostMapping("addSingleSelect")
+    @ResponseBody
+    public ResultKit addSingleSelect(@RequestBody String param) {
+
+        return null;
+    }
+
+    @PostMapping("addMultiSelect")
+    @ResponseBody
+    public ResultKit addMultiSelect(@RequestBody String param) {
+
+        return null;
     }
 
 }

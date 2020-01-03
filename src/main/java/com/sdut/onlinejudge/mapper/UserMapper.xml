@@ -8,7 +8,7 @@
     </select>
 
     <select id="findAllUsers" parameterType="string" resultType="userInfo">
-        select username, name, gender, college, score, times from userInfo
+        select username, name, gender, college, score, times from userInfo order by score desc
         <where>
             <if test="Uname != null">
                 <bind name="uname" value="'%' + Uname + '%'"/>

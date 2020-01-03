@@ -1,16 +1,16 @@
 package com.sdut.onlinejudge;
 
 
-import com.sdut.onlinejudge.model.User;
+import com.alibaba.fastjson.JSON;
 import com.sdut.onlinejudge.utils.JwtUtils;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 import org.junit.Test;
 
-
 import javax.crypto.SecretKey;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.UUID;
 
 //@SpringBootTest
@@ -32,7 +32,10 @@ public class OnlinejudgeApplicationTests {
     }
 
     @Test
-    public void test02() {
+    public void test02() throws ParseException {
+        String s = "1577456277000";
+        Date date = JSON.parseObject(s, Date.class);
+        System.out.println(date);
     }
 
 }

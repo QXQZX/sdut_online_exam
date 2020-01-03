@@ -2,6 +2,8 @@ package com.sdut.onlinejudge.model;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @Author: Devhui
  * @Date: 2019-12-07 16:40
@@ -13,4 +15,5 @@ public class Submit {
     private int cid;
     private String answers;
     private int score;
+    private Date submitTime;
 }

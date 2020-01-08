@@ -1,10 +1,12 @@
 package com.sdut.onlinejudge.service.ServiceImpl;
 
 import com.sdut.onlinejudge.mapper.AdminMapper;
+import com.sdut.onlinejudge.mapper.ProblemMapper;
 import com.sdut.onlinejudge.model.*;
 import com.sdut.onlinejudge.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,9 +18,13 @@ import java.util.List;
  */
 
 @Service
+@Transactional
 public class AdminServiceImpl implements AdminService {
     @Autowired
     AdminMapper adminMapper;
+
+    @Autowired
+    ProblemMapper problemMapper;
 
     @Override
     public Admin loginCheck(String username, String password) {
@@ -31,23 +37,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public int resetPwd(String username) {
+        return adminMapper.resetPwd(username);
+    }
+
+    @Override
     public int updateUserInfo(UserInfo userInfo) {
-        return 0;
+        return adminMapper.updateUserInfo(userInfo);
     }
 
     @Override
-    public int addJudgeProblem(JudgeProblem judgeProblem) {
-        return 0;
+    public int addUser(UserInfo userInfo) {
+        adminMapper.addUser(userInfo.getUsername());
+        return adminMapper.addUserInfo(userInfo);
     }
 
     @Override
-    public int addSingleSelect(SingleSelect select) {
-        return 0;
-    }
-
-    @Override
-    public int addMultiSelect(MultiSelect select) {
-        return 0;
+    public List<Admin> adminList() {
+        return adminMapper.adminList();
     }
 
     @Override

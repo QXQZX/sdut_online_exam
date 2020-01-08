@@ -35,4 +35,34 @@ public class ProblemServiceImpl implements ProblemService {
         map.put("multiSelects", multiSelects);
         return map;
     }
+
+    @Override
+    public List<SingleSelect> getSingleSelects(String keyWords) {
+        return problemMapper.getSingleSelects(keyWords);
+    }
+
+    @Override
+    public List<MultiSelect> getMultiSelects(String keyWords) {
+        return problemMapper.getMultiSelects(keyWords);
+    }
+
+    @Override
+    public List<JudgeProblem> getJudgeProblem(String keyWords) {
+        return problemMapper.getJudgeProblem(keyWords);
+    }
+
+    @Override
+    public int addSingleSelects(SingleSelect ss) {
+        return problemMapper.addSingleSelect(ss);
+    }
+
+    @Override
+    public int addMultiSelects(MultiSelect ms) {
+        return problemMapper.addMultiSelect(ms);
+    }
+
+    @Override
+    public int addJudgeProblem(JudgeProblem jp) {
+        return problemMapper.addJudgeProblem(jp);
+    }
 }

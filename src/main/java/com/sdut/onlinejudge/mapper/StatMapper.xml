@@ -13,4 +13,10 @@
         )
     </select>
 
+    <select id="getall">
+        select cid, username, name, gender, college, t1.score, submitTime
+        from (select cid, uid, score, submitTime from submits where cid=2) t1
+        inner join userinfo on t1.uid=userinfo.username
+    </select>
+
 </mapper>

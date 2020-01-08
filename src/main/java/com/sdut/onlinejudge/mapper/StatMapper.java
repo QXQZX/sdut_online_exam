@@ -1,7 +1,10 @@
 package com.sdut.onlinejudge.mapper;
 
 import com.sdut.onlinejudge.model.StatKit;
+import com.sdut.onlinejudge.model.SubmitUserInfo;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Author: Devhui
@@ -12,4 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StatMapper {
     StatKit getStat();
+
+    List<SubmitUserInfo> getall();
 }

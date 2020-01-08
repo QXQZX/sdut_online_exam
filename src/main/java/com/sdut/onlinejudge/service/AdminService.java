@@ -19,15 +19,17 @@ public interface AdminService {
     // 删除用户
     int deleteUser(String username);
 
+    // 删除用户
+    int resetPwd(String username);
+
     // 更新用户信息
     int updateUserInfo(UserInfo userInfo);
 
-    // 添加题目
-    int addJudgeProblem(JudgeProblem judgeProblem);
+    // 添加用户
+    int addUser(UserInfo userInfo);
 
-    int addSingleSelect(SingleSelect select);
-
-    int addMultiSelect(MultiSelect select);
+    // 添加用户
+    List<Admin> adminList();
 
     // 获取每场比赛做题情况
     List<Submit> getContestInfo(String cid);

@@ -14,9 +14,24 @@ import java.util.List;
  */
 @Repository
 public interface ProblemMapper {
+    // 随机抽题
     List<SingleSelect> fetchSingleSelects();
 
     List<MultiSelect> fetchMultiSelects();
 
     List<JudgeProblem> fetchJudgeProblem();
+
+    // 拉取所有题目
+    List<SingleSelect> getSingleSelects(String keyWords);
+
+    List<MultiSelect> getMultiSelects(String keyWords);
+
+    List<JudgeProblem> getJudgeProblem(String keyWords);
+
+    // 添加题目
+    int addJudgeProblem(JudgeProblem judgeProblem);
+
+    int addSingleSelect(SingleSelect select);
+
+    int addMultiSelect(MultiSelect select);
 }

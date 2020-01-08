@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @Author: Devhui
@@ -61,9 +64,9 @@ public class UserController {
                                  @RequestParam(value = "college", required = false) String college) {
         ResultKit<Map> resultKit = new ResultKit<>();
         // pageNum:表示第几页  pageSize:表示一页展示的数据
-//        String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
-//        PageHelper.startPage(pageNum, 10, orderBy);
-        PageHelper.startPage(pageNum, 10);
+        String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
+        PageHelper.startPage(pageNum, 10, orderBy);
+
         System.out.println("name" + name + "college" + college);
         List<UserInfo> allUsers = userService.findAllUsers(name, college);
         // 将查询到的数据封装到PageInfo对象

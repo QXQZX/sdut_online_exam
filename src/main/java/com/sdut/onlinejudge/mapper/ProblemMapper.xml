@@ -20,4 +20,51 @@
         jpid >= (SELECT floor(RAND() * (SELECT MAX(jpid) FROM judge_problems)))
         ORDER BY jpid LIMIT 0, 5
     </select>
+
+    <select id="getSingleSelects" parameterType="string" resultType="singleSelect">
+        select * from single_selects
+        <where>
+            <if test="keyWords != null">
+                <bind name="keywords" value="'%' + keyWords + '%'"/>
+                and title like #{keywords}
+            </if>
+        </where>
+    </select>
+
+    <select id="getMultiSelects" parameterType="string" resultType="multiSelect">
+        select * from multi_selects
+        <where>
+            <if test="keyWords != null">
+                <bind name="keywords" value="'%' + keyWords + '%'"/>
+                and title like #{keywords}
+            </if>
+        </where>
+    </select>
+
+    <select id="getJudgeProblem" parameterType="string" resultType="judgeProblem">
+        select * from judge_problems
+        <where>
+            <if test="keyWords != null">
+                <bind name="keywords" value="'%' + keyWords + '%'"/>
+                and title like #{keywords}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addJudgeProblem" parameterType="judgeProblem">
+        insert into judge_problems(title, optionT, optionF, answer, hint)
+        values (#{title}, "正确", "错误", #{answer}, #{hint})
+    </insert>
+
+    <insert id="addSingleSelect" parameterType="singleSelect">
+        insert into single_selects(title, optionA, optionB, optionC, optionD, optionE, answer, hint)
+        values (#{title}, #{optionA}, #{optionB}, #{optionC}, #{optionD}, #{optionE}, #{answer}, #{hint})
+    </insert>
+
+    <insert id="addMultiSelect" parameterType="multiSelect">
+        insert into multi_selects(title, optionA, optionB, optionC, optionD, optionE, answer, hint)
+        values (#{title}, #{optionA}, #{optionB}, #{optionC}, #{optionD}, #{optionE}, #{answer}, #{hint})
+    </insert>
+
+
 </mapper>

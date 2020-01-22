@@ -199,9 +199,17 @@ public class AdminController {
     @ResponseBody
     public ResultKit addJudgeProblem(@RequestParam(value = "type", defaultValue = "single") String type,
                                      @RequestBody String param) {
+        ResultKit resultKit = new ResultKit();
+        resultKit.setMessage("添加失败");
+        resultKit.setCode(ResultCode.WRONG_UP.code());
         if (type.equals("single")) {
             SingleSelect singleSelect = JSONObject.parseObject(param, SingleSelect.class);
             System.out.println(singleSelect);
+            int i = problemService.addSingleSelects(singleSelect);
+            if (i == 1) {
+                resultKit.setMessage("添加成功");
+                resultKit.setCode(ResultCode.SUCCESS.code());
+            }
         } else if (type.equals("judge")) {
 
 

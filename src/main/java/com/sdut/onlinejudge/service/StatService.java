@@ -1,6 +1,9 @@
 package com.sdut.onlinejudge.service;
 
+import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.StatKit;
+
+import java.util.List;
 
 /**
  * @Author: Devhui
@@ -11,4 +14,7 @@ import com.sdut.onlinejudge.model.StatKit;
 public interface StatService {
     // 获取统计信息
     StatKit getStat();
+
+    // 获取反馈列表
+    List<FeedBack> getFeedBacks();
 }

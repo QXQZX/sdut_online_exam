@@ -41,11 +41,11 @@ public class ContestController {
         ResultKit<Map> resultKit = new ResultKit<>();
         // pageNum:表示第几页  pageSize:表示一页展示的数据
         String orderBy = "cid" + " desc";//按照（数据库）排序字段 倒序 排序
-        PageHelper.startPage(pageNum, 2, orderBy);
+        PageHelper.startPage(pageNum, 3, orderBy);
 
         List<Contest> allContest = contestService.findAll(keyWords);
         // 将查询到的数据封装到PageInfo对象
-        PageInfo<Contest> pageInfo = new PageInfo(allContest, 2);
+        PageInfo<Contest> pageInfo = new PageInfo(allContest, 3);
         // 分割数据成功
 
         long total = pageInfo.getTotal();

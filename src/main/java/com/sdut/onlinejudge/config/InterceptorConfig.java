@@ -52,7 +52,7 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
         // ****注意前面别掉了斜杠****
         registry.addInterceptor(mainInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/user/login", "/user/standing", "/contest/all", "/user/reg", "/user/feedback"
-                        , "/admin/**/**");
+                        , "/admin/**/**/**");
         super.addInterceptors(registry);
     }
 

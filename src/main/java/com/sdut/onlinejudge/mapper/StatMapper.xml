@@ -19,4 +19,8 @@
         inner join userinfo on t1.uid=userinfo.username
     </select>
 
+    <select id="getFeedBacks" resultType="feedBack">
+        select * from feedback
+    </select>
+
 </mapper>

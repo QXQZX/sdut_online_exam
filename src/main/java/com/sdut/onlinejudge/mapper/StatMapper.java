@@ -1,5 +1,6 @@
 package com.sdut.onlinejudge.mapper;
 
+import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.StatKit;
 import com.sdut.onlinejudge.model.SubmitUserInfo;
 import org.springframework.stereotype.Repository;
@@ -17,4 +18,7 @@ public interface StatMapper {
     StatKit getStat();
 
     List<SubmitUserInfo> getall();
+
+    // 获取反馈列表
+    List<FeedBack> getFeedBacks();
 }

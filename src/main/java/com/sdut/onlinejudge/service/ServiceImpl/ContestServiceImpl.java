@@ -34,6 +34,20 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public List<Contest> findAll(String keyWords) {
+//        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+//        int hour = DateUtil.getHour(new Date());
+//        int minute = DateUtil.getHour(new Date());
+//        int seconds = DateUtil.getHour(new Date());
+//
+//        if (hour == 23 && minute == 59 && seconds == 59) {
+//
+//        } else {
+//            if (redisTemplate.hasKey("pv")) {
+//                ops.increment("pv");
+//            } else {
+//                ops.setIfAbsent("pv", "1");
+//            }
+//        }
         return contestMapper.findAll(keyWords);
     }
 
@@ -98,23 +112,23 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public Map<String, Object> getAnswerByCid(int cid) {
-        String ccid = "answer:" + cid;
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        boolean hasKey = redisTemplate.hasKey(ccid);
-        if (hasKey) {
-            String jsonString = ops.get(ccid);
-            System.out.println("========从缓存中获取数据========");
-            System.out.println("=============================");
-            Map map = JSON.parseObject(jsonString, Map.class);
-            return map;
-        } else {
-            String answer = contestMapper.getAnswerByCid(cid);
-            System.out.println("========从数据库中获取数据========");
-            System.out.println("=============================");
-            ops.set(ccid, answer, 60, TimeUnit.MINUTES);
-            Map map = JSON.parseObject(answer, Map.class);
-            return map;
-        }
+//        String ccid = "answer:" + cid;
+//        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+//        boolean hasKey = redisTemplate.hasKey(ccid);
+//        if (hasKey) {
+//            String jsonString = ops.get(ccid);
+//            System.out.println("========从缓存中获取数据========");
+//            System.out.println("=============================");
+//            Map map = JSON.parseObject(jsonString, Map.class);
+//            return map;
+//        } else {
+        String answer = contestMapper.getAnswerByCid(cid);
+        System.out.println("========从数据库中获取数据========");
+        System.out.println("=============================");
+//            ops.set(ccid, answer, 60, TimeUnit.MINUTES);
+        Map map = JSON.parseObject(answer, Map.class);
+        return map;
+//        }
     }
 
 

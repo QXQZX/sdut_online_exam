@@ -19,7 +19,7 @@
                 and college like #{collegeName}
             </if>
         </where>
-
+        order by score desc
     </select>
 
     <select id="getUserInfo" parameterType="string" resultType="userInfo">
@@ -39,7 +39,7 @@
     </update>
 
     <insert id="addFeedBack" parameterType="feedBack">
-        insert into feedback(contact, content) values (#{contact}, #{content})
+        insert into feedback(contact, content, feedTime) values (#{contact}, #{content}, #{feedTime})
     </insert>
 
 </mapper>

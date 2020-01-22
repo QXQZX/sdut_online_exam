@@ -1,10 +1,13 @@
 package com.sdut.onlinejudge.service.ServiceImpl;
 
 import com.sdut.onlinejudge.mapper.StatMapper;
+import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.StatKit;
 import com.sdut.onlinejudge.service.StatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Author: Devhui
@@ -20,5 +23,10 @@ public class StatServiceImpl implements StatService {
     @Override
     public StatKit getStat() {
         return statMapper.getStat();
+    }
+
+    @Override
+    public List<FeedBack> getFeedBacks() {
+        return statMapper.getFeedBacks();
     }
 }

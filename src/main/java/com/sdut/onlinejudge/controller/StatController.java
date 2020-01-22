@@ -1,11 +1,14 @@
 package com.sdut.onlinejudge.controller;
 
+import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.ResultKit;
 import com.sdut.onlinejudge.model.StatKit;
 import com.sdut.onlinejudge.service.StatService;
 import com.sdut.onlinejudge.utils.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author: Devhui
@@ -51,6 +54,23 @@ public class StatController {
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
             resultKit.setMessage("获取统计数据失败！");
+        }
+        return resultKit;
+    }
+
+    @GetMapping("fetchFeedbacks")
+    @ResponseBody
+    public ResultKit getFeedbacks() {
+        ResultKit<List> resultKit = new ResultKit<>();
+        List<FeedBack> feedBacks = statService.getFeedBacks();
+        System.out.println(feedBacks);
+        resultKit.setData(feedBacks);
+        if (feedBacks != null) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("获取反馈数据成功！");
+        } else {
+            resultKit.setCode(ResultCode.WRONG_UP.code());
+            resultKit.setMessage("获取反馈数据失败！");
         }
         return resultKit;
     }

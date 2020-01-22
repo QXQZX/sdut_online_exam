@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Author: Devhui
@@ -153,6 +150,7 @@ public class UserController {
         FeedBack feedBack = new FeedBack();
         feedBack.setContact(contact);
         feedBack.setContent(userFeedback);
+        feedBack.setFeedTime(new Date());
         int i = userService.addFeedBack(feedBack);
         ResultKit resultKit = new ResultKit<>();
         if (i == 1) {

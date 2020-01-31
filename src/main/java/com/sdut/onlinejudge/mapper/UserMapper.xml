@@ -8,22 +8,21 @@
     </select>
 
     <select id="findAllUsers" parameterType="string" resultType="userInfo">
-        select username, name, gender, college, score, times from userInfo
+        select username, name, gender, college, score, times from userinfo
         <where>
             <if test="Uname != null">
                 <bind name="uname" value="'%' + Uname + '%'"/>
-                and name like #{uname}
+                name like #{uname}
             </if>
             <if test="CollegeName != null">
                 <bind name="collegeName" value="'%' + CollegeName + '%'"/>
                 and college like #{collegeName}
             </if>
         </where>
-        order by score desc
     </select>
 
     <select id="getUserInfo" parameterType="string" resultType="userInfo">
-        select * from userInfo where username=#{username}
+        select * from userinfo where username=#{username}
     </select>
 
     <insert id="register" parameterType="user">

@@ -151,7 +151,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.onlinejudge.App</mainClass>
+                    <mainClass>com.sdut.onlinejudge.App</mainClass>
                 </configuration>
                 <executions>
                     <execution>

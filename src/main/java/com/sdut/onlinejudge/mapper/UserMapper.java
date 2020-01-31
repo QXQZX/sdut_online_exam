@@ -3,6 +3,7 @@ package com.sdut.onlinejudge.mapper;
 import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.User;
 import com.sdut.onlinejudge.model.UserInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface UserMapper {
     User loginCheck(String username, String password);
 
     // 获取所有用户信息
-    List<UserInfo> findAllUsers(String Uname, String CollegeName);
+    List<UserInfo> findAllUsers(@Param("Uname") String Uname, @Param("CollegeName") String CollegeName);
 
     // 注册
     int register(User user);

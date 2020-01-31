@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sdut.onlinejudge.model.FeedBack;
-import com.sdut.onlinejudge.model.ResultKit;
-import com.sdut.onlinejudge.model.User;
-import com.sdut.onlinejudge.model.UserInfo;
+import com.sdut.onlinejudge.model.*;
 import com.sdut.onlinejudge.service.UserService;
 import com.sdut.onlinejudge.utils.JwtUtils;
 import com.sdut.onlinejudge.utils.ResultCode;
@@ -59,15 +56,17 @@ public class UserController {
     public ResultKit getStanding(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                  @RequestParam(value = "name", required = false) String name,
                                  @RequestParam(value = "college", required = false) String college) {
+        System.out.println(pageNum);
+        System.out.println(name);
+        System.out.println(college);
         ResultKit<Map> resultKit = new ResultKit<>();
-        // pageNum:表示第几页  pageSize:表示一页展示的数据
         String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
-        PageHelper.startPage(pageNum, 10, orderBy);
 
-        System.out.println("name" + name + "college" + college);
+        PageHelper.startPage(pageNum, 1, orderBy);
+
         List<UserInfo> allUsers = userService.findAllUsers(name, college);
         // 将查询到的数据封装到PageInfo对象
-        PageInfo<UserInfo> pageInfo = new PageInfo(allUsers, 10);
+        PageInfo<Contest> pageInfo = new PageInfo(allUsers, 1);
         // 分割数据成功
 
         long total = pageInfo.getTotal();
@@ -76,9 +75,10 @@ public class UserController {
         map.put("total", total);
         map.put("pageInfo", allUsers);
 
-        resultKit.setCode(ResultCode.SUCCESS.code());
-        resultKit.setMessage("获取成功");
         resultKit.setData(map);
+        resultKit.setCode(ResultCode.SUCCESS.code());
+        resultKit.setMessage("获取全部比赛信息成功");
+
         return resultKit;
     }
 

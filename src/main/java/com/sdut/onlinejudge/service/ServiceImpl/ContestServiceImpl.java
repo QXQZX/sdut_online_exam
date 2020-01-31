@@ -7,13 +7,11 @@ import com.sdut.onlinejudge.service.ContestService;
 import com.sdut.onlinejudge.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Devhui
@@ -91,23 +89,23 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public Map<String, Object> getContestByCid(int cid) {
-        String ccid = "contest:" + cid;
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        boolean hasKey = redisTemplate.hasKey(ccid);
-        if (hasKey) {
-            String jsonString = ops.get(ccid);
-            System.out.println("========从缓存中获取数据========");
-            System.out.println("=============================");
-            Map map = JSON.parseObject(jsonString, Map.class);
-            return map;
-        } else {
-            String contest = contestMapper.getContestByCid(cid);
-            System.out.println("========从数据库中获取数据========");
-            System.out.println("=============================");
-            ops.set(ccid, contest, 60, TimeUnit.MINUTES);
-            Map map = JSON.parseObject(contest, Map.class);
-            return map;
-        }
+//        String ccid = "contest:" + cid;
+//        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+//        boolean hasKey = redisTemplate.hasKey(ccid);
+//        if (hasKey) {
+//            String jsonString = ops.get(ccid);
+//            System.out.println("========从缓存中获取数据========");
+//            System.out.println("=============================");
+//            Map map = JSON.parseObject(jsonString, Map.class);
+//            return map;
+//        } else {
+        String contest = contestMapper.getContestByCid(cid);
+        System.out.println("========从数据库中获取数据========");
+        System.out.println("=============================");
+//            ops.set(ccid, contest, 60, TimeUnit.MINUTES);
+        Map map = JSON.parseObject(contest, Map.class);
+        return map;
+//        }
     }
 
     @Override

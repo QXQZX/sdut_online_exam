@@ -7,7 +7,11 @@
     </select>
 
     <select id="getSubmit" resultType="submit">
-        select answers, score from submits where cid=#{cid} and uid=#{uid}
+        SELECT * from (
+            SELECT uid, answers, score, @rownum := @rownum +1 AS rank
+            FROM `submits`, (SELECT@rownum :=0) r
+            WHERE cid = #{cid} ORDER BY score DESC
+        ) a WHERE uid = #{uid}
     </select>
 
     <insert id="addSubmit" parameterType="submit">

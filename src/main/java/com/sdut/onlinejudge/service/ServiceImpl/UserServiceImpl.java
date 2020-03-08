@@ -2,6 +2,7 @@ package com.sdut.onlinejudge.service.ServiceImpl;
 
 import com.sdut.onlinejudge.mapper.UserMapper;
 import com.sdut.onlinejudge.model.FeedBack;
+import com.sdut.onlinejudge.model.Notice;
 import com.sdut.onlinejudge.model.User;
 import com.sdut.onlinejudge.model.UserInfo;
 import com.sdut.onlinejudge.service.UserService;
@@ -55,6 +56,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addFeedBack(FeedBack feedBack) {
         return userMapper.addFeedBack(feedBack);
+    }
+
+    @Override
+    public List<Notice> fetchNotices() {
+        return userMapper.fetchNotices();
     }
 
 

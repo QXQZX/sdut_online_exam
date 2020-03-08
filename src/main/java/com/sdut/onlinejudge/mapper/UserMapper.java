@@ -1,6 +1,7 @@
 package com.sdut.onlinejudge.mapper;
 
 import com.sdut.onlinejudge.model.FeedBack;
+import com.sdut.onlinejudge.model.Notice;
 import com.sdut.onlinejudge.model.User;
 import com.sdut.onlinejudge.model.UserInfo;
 import org.apache.ibatis.annotations.Param;
@@ -35,4 +36,7 @@ public interface UserMapper {
 
     // 反馈bug 和 建议
     int addFeedBack(FeedBack feedBack);
+
+    // 获取所有通知
+    List<Notice> fetchNotices();
 }

@@ -1,6 +1,7 @@
 package com.sdut.onlinejudge.service;
 
 import com.sdut.onlinejudge.model.FeedBack;
+import com.sdut.onlinejudge.model.Notice;
 import com.sdut.onlinejudge.model.User;
 import com.sdut.onlinejudge.model.UserInfo;
 
@@ -33,4 +34,6 @@ public interface UserService {
     // 反馈bug 和 建议
     int addFeedBack(FeedBack feedBack);
 
+    // 获取所有通知
+    List<Notice> fetchNotices();
 }

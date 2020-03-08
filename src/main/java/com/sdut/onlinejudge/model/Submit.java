@@ -16,4 +16,5 @@ public class Submit {
     private String answers;
     private int score;
     private Date submitTime;
+    private Integer rank;
 }

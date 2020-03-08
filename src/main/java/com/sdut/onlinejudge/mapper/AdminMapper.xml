@@ -31,4 +31,13 @@
     <select id="adminList" resultType="admin">
         select username, name from admin
     </select>
+
+    <insert id="addNotice" parameterType="notice">
+        insert into admin_notice(content, dateTime, type)
+        values (#{content}, #{dateTime}, #{type})
+    </insert>
+
+    <delete id="deleteNotice" parameterType="int">
+        delete from admin_notice where nid=#{nid}
+    </delete>
 </mapper>

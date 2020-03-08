@@ -2,7 +2,7 @@ package com.sdut.onlinejudge.mapper;
 
 import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.StatKit;
-import com.sdut.onlinejudge.model.SubmitUserInfo;
+import com.sdut.onlinejudge.model.SubmitStat;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,7 +17,8 @@ import java.util.List;
 public interface StatMapper {
     StatKit getStat();
 
-    List<SubmitUserInfo> getall();
+    // 根据cid获取单次测试统计信息
+    List<SubmitStat> getStatByCid(String cid);
 
     // 获取反馈列表
     List<FeedBack> getFeedBacks();

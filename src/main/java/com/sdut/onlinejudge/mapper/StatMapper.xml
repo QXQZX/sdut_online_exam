@@ -13,10 +13,11 @@
         )
     </select>
 
-    <select id="getall">
+    <select id="getStatByCid" resultType="submitStat">
         select cid, username, name, gender, college, t1.score, submitTime
-        from (select cid, uid, score, submitTime from submits where cid=2) t1
+        from (select cid, uid, score, submitTime from submits where cid=#{cid}) t1
         inner join userinfo on t1.uid=userinfo.username
+        ORDER BY t1.score DESC
     </select>
 
     <select id="getFeedBacks" resultType="feedBack">

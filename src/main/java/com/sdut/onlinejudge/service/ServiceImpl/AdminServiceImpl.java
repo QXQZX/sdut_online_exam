@@ -1,6 +1,7 @@
 package com.sdut.onlinejudge.service.ServiceImpl;
 
 import com.sdut.onlinejudge.mapper.AdminMapper;
+import com.sdut.onlinejudge.mapper.NoticeMapper;
 import com.sdut.onlinejudge.mapper.ProblemMapper;
 import com.sdut.onlinejudge.model.*;
 import com.sdut.onlinejudge.service.AdminService;
@@ -25,6 +26,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     ProblemMapper problemMapper;
+
+    @Autowired
+    NoticeMapper noticeMapper;
 
     @Override
     public Admin loginCheck(String username, String password) {
@@ -58,8 +62,19 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Submit> getContestInfo(String cid) {
-        return null;
+    public List<Notice> fetchNotices() {
+        return noticeMapper.fetchNotices();
     }
+
+    @Override
+    public int addNotice(Notice notice) {
+        return noticeMapper.addNotice(notice);
+    }
+
+    @Override
+    public int deleteNotice(int nid) {
+        return noticeMapper.deleteNotice(nid);
+    }
+
 
 }

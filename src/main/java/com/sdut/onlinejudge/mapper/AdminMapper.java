@@ -34,7 +34,4 @@ public interface AdminMapper {
     // 添加用户
     List<Admin> adminList();
 
-    // 获取每场比赛做题情况
-    List<Submit> getContestInfo(String cid);
-
 }

@@ -9,6 +9,7 @@ import com.sdut.onlinejudge.model.Submit;
 import com.sdut.onlinejudge.service.ContestService;
 import com.sdut.onlinejudge.service.SubmitService;
 import com.sdut.onlinejudge.utils.ResultCode;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ import java.util.Map;
 @CrossOrigin
 @RestController
 @RequestMapping("contest")
+@Api("测试信息接口")
 public class ContestController {
     @Autowired
     private ContestService contestService;
@@ -77,7 +79,6 @@ public class ContestController {
                                    @PathVariable("cid") int cid,
                                    @RequestParam(value = "time", required = false) String date,
                                    @RequestBody String userAns) {
-        System.out.println(date);
         Date submitTime = JSON.parseObject(date, Date.class);
         ResultKit<Integer> resultKit = new ResultKit();
         if (submitService.hasSubmit(uid, cid) == null) {
@@ -122,11 +123,14 @@ public class ContestController {
         Map<String, Object> contestByCid = contestService.getContestByCid(cid); // 获取测试题目信息
         Map uSubmit = JSON.parseObject(submit.getAnswers(), Map.class); // 获取用户提交的答案
 
+
+        System.out.println("submit" + submit);
         Map<String, Object> result = new HashMap<>();
         result.put("problems", contestByCid);
         result.put("answer", answerByCid);
         result.put("uSubmit", uSubmit);
         result.put("score", submit.getScore());
+        result.put("rank", submit.getRank());
 
         ResultKit<Map> resultKit = new ResultKit<>();
         resultKit.setMessage("获取用户提交和答案成功。");

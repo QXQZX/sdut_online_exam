@@ -3,8 +3,10 @@ package com.sdut.onlinejudge.controller;
 import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.ResultKit;
 import com.sdut.onlinejudge.model.StatKit;
+import com.sdut.onlinejudge.model.SubmitStat;
 import com.sdut.onlinejudge.service.StatService;
 import com.sdut.onlinejudge.utils.ResultCode;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("admin/stat")
+@Api("数据统计接口")
 public class StatController {
 
     @Autowired
@@ -41,19 +44,19 @@ public class StatController {
         return resultKit;
     }
 
-    @GetMapping("getContestStat/{cid}")
+    @GetMapping("contestStat/{cid}")
     @ResponseBody
-    public ResultKit getContestStat() {
-        ResultKit<StatKit> resultKit = new ResultKit<>();
-        StatKit stat = statService.getStat();
-        System.out.println(stat);
-        resultKit.setData(stat);
-        if (stat != null) {
+    public ResultKit getContestStat(@PathVariable("cid") String cid) {
+        ResultKit<List> resultKit = new ResultKit<>();
+        List<SubmitStat> contestStat = statService.getStatByCid(cid);
+        System.out.println(contestStat);
+        resultKit.setData(contestStat);
+        if (contestStat != null) {
             resultKit.setCode(ResultCode.SUCCESS.code());
-            resultKit.setMessage("获取统计数据成功！");
+            resultKit.setMessage("获取测试统计数据成功！");
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
-            resultKit.setMessage("获取统计数据失败！");
+            resultKit.setMessage("获取测试统计数据失败！");
         }
         return resultKit;
     }

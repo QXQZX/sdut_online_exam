@@ -17,6 +17,7 @@ import com.sdut.onlinejudge.service.ProblemService;
 import com.sdut.onlinejudge.service.UserService;
 import com.sdut.onlinejudge.utils.JwtUtils;
 import com.sdut.onlinejudge.utils.ResultCode;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("admin")
+@Api("管理员端接口")
 public class AdminController {
     @Autowired
     AdminService adminService;
@@ -174,7 +176,6 @@ public class AdminController {
     public ResultKit addUser(@RequestBody UserInfo userInfo) {
         ResultKit resultKit = new ResultKit();
         int i = adminService.addUser(userInfo);
-        System.out.println("插入标志" + i);
         resultKit.setCode(ResultCode.WRONG_UP.code());
         resultKit.setMessage("添加用户失败！");
         if (i == 1) {
@@ -202,21 +203,26 @@ public class AdminController {
         ResultKit resultKit = new ResultKit();
         resultKit.setMessage("添加失败");
         resultKit.setCode(ResultCode.WRONG_UP.code());
+        int i = 0;
         if (type.equals("single")) {
             SingleSelect singleSelect = JSONObject.parseObject(param, SingleSelect.class);
-            System.out.println(singleSelect);
-            int i = problemService.addSingleSelects(singleSelect);
-            if (i == 1) {
-                resultKit.setMessage("添加成功");
-                resultKit.setCode(ResultCode.SUCCESS.code());
-            }
+            i = problemService.addSingleSelects(singleSelect);
         } else if (type.equals("judge")) {
-
-
+            JudgeProblem judgeProblem = JSONObject.parseObject(param, JudgeProblem.class);
+            System.out.println("judgeProblem = " + judgeProblem);
+            i = problemService.addJudgeProblem(judgeProblem);
         } else if (type.equals("multi")) {
-
+            MultiSelect multiSelect = JSONObject.parseObject(param, MultiSelect.class);
+            i = problemService.addMultiSelects(multiSelect);
         }
-        return null;
+
+        if (i == 1) {
+            resultKit.setMessage("添加成功");
+            resultKit.setCode(ResultCode.SUCCESS.code());
+        }
+        return resultKit;
     }
+
+
 
 }

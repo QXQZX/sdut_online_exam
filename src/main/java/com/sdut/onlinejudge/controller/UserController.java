@@ -8,6 +8,7 @@ import com.sdut.onlinejudge.model.*;
 import com.sdut.onlinejudge.service.UserService;
 import com.sdut.onlinejudge.utils.JwtUtils;
 import com.sdut.onlinejudge.utils.ResultCode;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("user")
+@Api("用户相关接口")
 public class UserController {
 
     @Autowired
@@ -62,11 +64,11 @@ public class UserController {
         ResultKit<Map> resultKit = new ResultKit<>();
         String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
 
-        PageHelper.startPage(pageNum, 1, orderBy);
+        PageHelper.startPage(pageNum, 10, orderBy);
 
         List<UserInfo> allUsers = userService.findAllUsers(name, college);
         // 将查询到的数据封装到PageInfo对象
-        PageInfo<Contest> pageInfo = new PageInfo(allUsers, 1);
+        PageInfo<Contest> pageInfo = new PageInfo(allUsers, 10);
         // 分割数据成功
 
         long total = pageInfo.getTotal();
@@ -160,6 +162,18 @@ public class UserController {
             resultKit.setCode(ResultCode.WRONG_UP.code());
             resultKit.setMessage("反馈失败，请重试。");
         }
+        return resultKit;
+    }
+
+    @GetMapping("notice")
+    @ResponseBody
+    public ResultKit getNotice() {
+        ResultKit<List> resultKit = new ResultKit();
+        List<Notice> notices = userService.fetchNotices();
+        System.out.println(notices);
+        resultKit.setCode(ResultCode.SUCCESS.code());
+        resultKit.setMessage("获取通知成功");
+        resultKit.setData(notices);
         return resultKit;
     }
 }

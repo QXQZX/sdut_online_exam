@@ -31,7 +31,12 @@ public interface AdminService {
     // 添加用户
     List<Admin> adminList();
 
-    // 获取每场比赛做题情况
-    List<Submit> getContestInfo(String cid);
+    // 获取全部通知
+    List<Notice> fetchNotices();
 
+    // 发布通知
+    int addNotice(Notice notice);
+
+    // 删除通知
+    int deleteNotice(int nid);
 }

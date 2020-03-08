@@ -41,4 +41,7 @@
         insert into feedback(contact, content, feedTime) values (#{contact}, #{content}, #{feedTime})
     </insert>
 
+    <select id="fetchNotices" resultType="notice">
+        SELECT * from admin_notice ORDER BY dateTime DESC LIMIT 3
+    </select>
 </mapper>

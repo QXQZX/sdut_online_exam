@@ -18,7 +18,7 @@ public interface ContestService {
     Map<String, Object> getContestByCid(int cid);
 
     // 发布新的测试
-    int deployContest();
+    int deployContest(Map<String, String> contestInfo);
 
     // 根据cid获取答案信息
     Map<String, Object> getAnswerByCid(int cid);

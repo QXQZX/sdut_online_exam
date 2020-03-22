@@ -4,18 +4,18 @@
 
 
     <select id="findAll" parameterType="string" resultType="contest">
-        select cid, cname, startTime, endTime, status from contests
+        select cid, cname, startTime, endTime from contests
         <if test="keyWords != null">
             <bind name="pattern" value="'%' + keyWords + '%'"/>
             where cname LIKE #{pattern}
         </if>
     </select>
 
-    <update id="deployContest" parameterType="contest">
-        update contests
-        set problems=#{problems}, answers=#{answers}
-        where cid = 3
-    </update>
+    <insert id="deployContest" parameterType="contest">
+        insert into
+        contests(cname, problems, answers, startTime, endTime, singleScore, multiScore, judgeScore)
+        values (#{cname}, #{problems}, #{answers}, #{startTime}, #{endTime}, #{singleScore}, #{multiScore}, #{judgeScore})
+    </insert>
 
     <select id="getContestByCid" resultType="string" parameterType="int">
         select problems from contests where cid=#{cid}

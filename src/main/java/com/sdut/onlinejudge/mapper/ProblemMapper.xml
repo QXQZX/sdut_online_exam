@@ -3,22 +3,22 @@
 <mapper namespace="com.sdut.onlinejudge.mapper.ProblemMapper">
 
 
-    <select id="fetchSingleSelects" resultType="singleSelect">
+    <select id="fetchSingleSelects" parameterType="int" resultType="singleSelect">
         SELECT * FROM single_selects WHERE
         spid >= (SELECT floor(RAND() * (SELECT MAX(spid) FROM single_selects)))
-        ORDER BY spid LIMIT 0, 5
+        ORDER BY spid LIMIT 0, #{count}
     </select>
 
-    <select id="fetchMultiSelects" resultType="multiSelect">
+    <select id="fetchMultiSelects" parameterType="int" resultType="multiSelect">
         SELECT * FROM multi_selects WHERE
         mpid >= (SELECT floor(RAND() * (SELECT MAX(mpid) FROM multi_selects)))
-        ORDER BY mpid LIMIT 0, 5
+        ORDER BY mpid LIMIT 0, #{count}
     </select>
 
-    <select id="fetchJudgeProblem" resultType="judgeProblem">
+    <select id="fetchJudgeProblem" parameterType="int" resultType="judgeProblem">
         SELECT * FROM judge_problems WHERE
         jpid >= (SELECT floor(RAND() * (SELECT MAX(jpid) FROM judge_problems)))
-        ORDER BY jpid LIMIT 0, 5
+        ORDER BY jpid LIMIT 0, #{count}
     </select>
 
     <select id="getSingleSelects" parameterType="string" resultType="singleSelect">

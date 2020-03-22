@@ -9,7 +9,6 @@ import com.sdut.onlinejudge.model.Submit;
 import com.sdut.onlinejudge.service.ContestService;
 import com.sdut.onlinejudge.service.SubmitService;
 import com.sdut.onlinejudge.utils.ResultCode;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +23,10 @@ import java.util.Map;
  * @Date: 2019-11-28 17:05
  * @Version 1.0
  */
-@CrossOrigin
+
 @RestController
 @RequestMapping("contest")
-@Api("测试信息接口")
+//@Api("测试信息接口")
 public class ContestController {
     @Autowired
     private ContestService contestService;
@@ -36,12 +35,17 @@ public class ContestController {
     private SubmitService submitService;
 
 
+    /*
+    select distinct x.from1
+from judge_problems as x,judge_problems as y
+where x.from1!=y.from1
+     */
+
     @GetMapping("all")
-    @ResponseBody
     public ResultKit getAllContest(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                    @RequestParam(value = "keyWords", required = false) String keyWords) {
         ResultKit<Map> resultKit = new ResultKit<>();
-        // pageNum:表示第几页  pageSize:表示一页展示的数据
+
         String orderBy = "cid" + " desc";//按照（数据库）排序字段 倒序 排序
         PageHelper.startPage(pageNum, 3, orderBy);
 
@@ -55,6 +59,8 @@ public class ContestController {
         Map<String, Object> map = new HashMap<>();
         map.put("total", total);
         map.put("pageInfo", allContest);
+
+        System.out.println(allContest);
 
         resultKit.setData(map);
         resultKit.setCode(ResultCode.SUCCESS.code());

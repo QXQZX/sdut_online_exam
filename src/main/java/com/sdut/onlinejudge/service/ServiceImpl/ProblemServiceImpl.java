@@ -24,11 +24,16 @@ public class ProblemServiceImpl implements ProblemService {
 
 
     @Override
-    public Map<String, Object> fetchProblems() {
+    public Map<String, Object> fetchProblems(Map<String, String> contestInfo) {
+        int singleCount = Integer.parseInt(contestInfo.get("singleCount"));
+        System.out.println(singleCount);
+        int judgeCount = Integer.parseInt(contestInfo.get("judgeCount"));
+        int multiCount = Integer.parseInt(contestInfo.get("multiCount"));
+
         HashMap<String, Object> map = new HashMap<>();
-        List<SingleSelect> singleSelects = problemMapper.fetchSingleSelects();
-        List<JudgeProblem> judgeProblems = problemMapper.fetchJudgeProblem();
-        List<MultiSelect> multiSelects = problemMapper.fetchMultiSelects();
+        List<SingleSelect> singleSelects = problemMapper.fetchSingleSelects(singleCount);
+        List<JudgeProblem> judgeProblems = problemMapper.fetchJudgeProblem(judgeCount);
+        List<MultiSelect> multiSelects = problemMapper.fetchMultiSelects(multiCount);
 
         map.put("singleSelects", singleSelects);
         map.put("judgeProblems", judgeProblems);

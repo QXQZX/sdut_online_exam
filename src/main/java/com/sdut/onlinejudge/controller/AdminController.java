@@ -15,13 +15,23 @@ import com.sdut.onlinejudge.service.AdminService;
 import com.sdut.onlinejudge.service.ContestService;
 import com.sdut.onlinejudge.service.ProblemService;
 import com.sdut.onlinejudge.service.UserService;
+import com.sdut.onlinejudge.utils.ExcelUtils;
 import com.sdut.onlinejudge.utils.JwtUtils;
 import com.sdut.onlinejudge.utils.ResultCode;
 import io.swagger.annotations.Api;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,12 +127,18 @@ public class AdminController {
 
     @PostMapping("deploy")
     @ResponseBody
-    public ResultKit deployNewContest(@RequestBody String param) {
+    public ResultKit deployNewContest(@RequestBody Map<String, String> contestInfo) {
         ResultKit<Integer> resultKit = new ResultKit<>();
-        int i = contestService.deployContest();
-        resultKit.setData(i);
-        resultKit.setCode(ResultCode.SUCCESS.code());
-        resultKit.setMessage("新测试发布成功");
+        System.out.println("contestInfo = " + contestInfo);
+        int i = contestService.deployContest(contestInfo);
+        System.out.println("i = " + i);
+        if (i == 1) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("新测试发布成功");
+        } else {
+            resultKit.setCode(ResultCode.WRONG_UP.code());
+            resultKit.setMessage("新测试发布失败");
+        }
         return resultKit;
     }
 
@@ -223,6 +239,104 @@ public class AdminController {
         return resultKit;
     }
 
+    @GetMapping("import")
+    @ResponseBody
+    public ResultKit importProblemData(@RequestParam(value = "type", defaultValue = "single") String type) {
+        File file = new File("C:\\Users\\Devhui\\Documents\\Tencent Files\\501966782\\FileRecv\\辅导员题目\\多选题.xlsx");
+        try {
+            XSSFWorkbook wb = new XSSFWorkbook(file);
+            int sheets = wb.getNumberOfSheets();
+            //只读取第一个sheet
+            XSSFSheet sheetAt = wb.getSheetAt(0);
+            //这个表示当前sheet有多少行数据,一行一行读取就行,但是会把没有数据的行读出来,需要加异常处理
+            int rows = sheetAt.getPhysicalNumberOfRows();
+            System.out.println(rows);
+            for (int i = 0; i < rows; i++) {
+                if (i == 0) {
+                    continue;
+                }
+
+                //某一行的数据,是一行一行的读取
+                XSSFRow row = sheetAt.getRow(i);
+                if (ExcelUtils.isRowEmpty(row) || row == null) {
+                    continue;
+                }
 
 
+                for (int j = row.getFirstCellNum(); j < row.getLastCellNum(); j++) {
+                    Cell cell = row.getCell(j);
+                    cell.setCellType(CellType.STRING);
+                }
+
+                importMs(row);
+            }
+        } catch (
+                InvalidFormatException e) {
+            e.printStackTrace();
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        } catch (
+                RuntimeException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 批量插入判断题
+    private void importJp(Row row) {
+        // 创建单选题对象
+        JudgeProblem judgeProblem = new JudgeProblem(
+                row.getCell(0).getStringCellValue(),
+                row.getCell(1).getStringCellValue(),
+                row.getCell(2).getStringCellValue(),
+                row.getCell(3).getStringCellValue(),
+                row.getCell(4).getStringCellValue()
+        );
+        int i1 = problemService.addJudgeProblem(judgeProblem);
+        System.out.println(i1);
+    }
+
+    // 批量插入单选题
+    private void importSs(Row row) {
+        SingleSelect ss = new SingleSelect(
+                row.getCell(0).getStringCellValue(),
+                row.getCell(1).getStringCellValue(),
+                row.getCell(2).getStringCellValue(),
+                row.getCell(3).getStringCellValue(),
+                row.getCell(4).getStringCellValue(),
+                row.getCell(5).getStringCellValue(),
+                row.getCell(6).getStringCellValue(),
+                row.getCell(7).getStringCellValue()
+        );
+        int i1 = problemService.addSingleSelects(ss);
+    }
+
+    // 批量插入多选题
+    private void importMs(Row row) {
+        String answers = row.getCell(6).getStringCellValue();
+
+        if (answers.contains(",")) {
+        } else {
+            char[] chars = answers.toCharArray();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < chars.length; i++) {
+                sb.append(chars[i]);
+                if (i != chars.length - 1)
+                    sb.append(",");
+            }
+            answers = sb.toString();
+        }
+        MultiSelect ss = new MultiSelect(
+                row.getCell(0).getStringCellValue(),
+                row.getCell(1).getStringCellValue(),
+                row.getCell(2).getStringCellValue(),
+                row.getCell(3).getStringCellValue(),
+                row.getCell(4).getStringCellValue(),
+                row.getCell(5).getStringCellValue(),
+                answers,
+                row.getCell(7).getStringCellValue()
+        );
+        int i1 = problemService.addMultiSelects(ss);
+    }
 }

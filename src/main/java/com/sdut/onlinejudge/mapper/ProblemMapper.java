@@ -15,11 +15,11 @@ import java.util.List;
 @Repository
 public interface ProblemMapper {
     // 随机抽题
-    List<SingleSelect> fetchSingleSelects();
+    List<SingleSelect> fetchSingleSelects(int count);
 
-    List<MultiSelect> fetchMultiSelects();
+    List<MultiSelect> fetchMultiSelects(int count);
 
-    List<JudgeProblem> fetchJudgeProblem();
+    List<JudgeProblem> fetchJudgeProblem(int count);
 
     // 拉取所有题目
     List<SingleSelect> getSingleSelects(String keyWords);

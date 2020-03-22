@@ -10,4 +10,12 @@ public class JudgeProblem {
     String optionF;
     String answer;
     String hint;
+
+    public JudgeProblem(String title, String optionT, String optionF, String answer, String hint) {
+        this.title = title;
+        this.optionT = optionT;
+        this.optionF = optionF;
+        this.answer = answer;
+        this.hint = hint;
+    }
 }

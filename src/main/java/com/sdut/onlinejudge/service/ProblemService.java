@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public interface ProblemService {
     // 拉取整套题
-    Map<String, Object> fetchProblems();
+    Map<String, Object> fetchProblems(Map<String, String> contestInfo);
 
     // 拉取单选题
     List<SingleSelect> getSingleSelects(String keyWords);

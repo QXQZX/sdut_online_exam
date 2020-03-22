@@ -5,10 +5,12 @@ import com.sdut.onlinejudge.mapper.ContestMapper;
 import com.sdut.onlinejudge.model.*;
 import com.sdut.onlinejudge.service.ContestService;
 import com.sdut.onlinejudge.service.ProblemService;
+import com.sdut.onlinejudge.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,15 +52,18 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public int deployContest() {
-        Map<String, Object> map = problemService.fetchProblems(); // 题目
+    public int deployContest(Map<String, String> contestInfo) {
+        System.out.println("fetch");
+        Map<String, Object> map = problemService.fetchProblems(contestInfo); // 题目
+        System.out.println("problem");
+
         Answer answer = new Answer(); // 答案
         List<SingleSelect> singleSelects = (List<SingleSelect>) map.get("singleSelects");
         List<JudgeProblem> judgeProblems = (List<JudgeProblem>) map.get("judgeProblems");
         List<MultiSelect> multiSelects = (List<MultiSelect>) map.get("multiSelects");
 
+        // 题目答案分离
         ArrayList<String> sans = new ArrayList<>();
-
         for (SingleSelect s : singleSelects) {
             sans.add(s.getAnswer());
             s.setAnswer(null);
@@ -73,17 +78,33 @@ public class ContestServiceImpl implements ContestService {
             jans.add(s.getAnswer());
             s.setAnswer(null);
         }
+        // 题目
         map.put("singleSelects", singleSelects);
         map.put("judgeProblems", judgeProblems);
         map.put("multiSelects", multiSelects);
 
+        // 答案
         answer.setSingleSelectsAns(sans);
         answer.setJudgeAns(jans);
         answer.setMultiSelectsAns(mans);
 
+        String startTime = contestInfo.get("startTime");
+        String endTime = contestInfo.get("endTime");
+
         Contest contest = new Contest();
-        contest.setProblems(JSON.toJSONString(map));
-        contest.setAnswers(JSON.toJSONString(answer));
+        try {
+            contest.setCname(contestInfo.get("cname"));
+            contest.setStartTime(DateUtil.dateFormat(startTime));
+            contest.setEndTime(DateUtil.dateFormat(endTime));
+            contest.setJudgeScore(new Float(contestInfo.get("judgeScore")));
+            contest.setSingleScore(new Float(contestInfo.get("singleScore")));
+            contest.setMultiScore(new Float(contestInfo.get("multiScore")));
+            contest.setProblems(JSON.toJSONString(map));
+            contest.setAnswers(JSON.toJSONString(answer));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println();
         return contestMapper.deployContest(contest);
     }
 

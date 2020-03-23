@@ -34,4 +34,11 @@ public interface ProblemMapper {
     int addSingleSelect(SingleSelect select);
 
     int addMultiSelect(MultiSelect select);
+
+    // 删除题目
+    int delJudgeProblem(String jpid);
+
+    int delSingleSelect(String dpid);
+
+    int delMultiSelect(String mpid);
 }

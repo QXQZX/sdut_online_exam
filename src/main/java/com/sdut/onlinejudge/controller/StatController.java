@@ -10,7 +10,9 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Devhui
@@ -57,6 +59,32 @@ public class StatController {
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
             resultKit.setMessage("获取测试统计数据失败！");
+        }
+        return resultKit;
+    }
+
+
+    @GetMapping("hintStat")
+    public ResultKit problemHintStat() {
+        ResultKit<Map> resultKit = new ResultKit<>();
+
+        List<Map> singleHint = statService.getSingleHint();
+        List<Map> multiHint = statService.getMultiHint();
+
+        System.out.println("singleHint = " + singleHint);
+        System.out.println("multiHint = " + multiHint);
+
+        HashMap<String, List> map = new HashMap<>();
+        map.put("singleHint", singleHint);
+        map.put("multiHint", multiHint);
+
+        if (singleHint != null && multiHint != null) {
+            resultKit.setData(map);
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("获取题目统计数据成功！");
+        } else {
+            resultKit.setCode(ResultCode.WRONG_UP.code());
+            resultKit.setMessage("获取题目统计数据失败！");
         }
         return resultKit;
     }

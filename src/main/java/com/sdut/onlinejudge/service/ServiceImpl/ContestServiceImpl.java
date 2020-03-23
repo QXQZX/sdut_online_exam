@@ -9,6 +9,7 @@ import com.sdut.onlinejudge.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
+@Transactional
 public class ContestServiceImpl implements ContestService {
 
     @Autowired

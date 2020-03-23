@@ -7,6 +7,7 @@ import com.sdut.onlinejudge.model.SingleSelect;
 import com.sdut.onlinejudge.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
+@Transactional
 public class ProblemServiceImpl implements ProblemService {
     @Autowired
     private ProblemMapper problemMapper;
@@ -69,5 +71,20 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public int addJudgeProblem(JudgeProblem jp) {
         return problemMapper.addJudgeProblem(jp);
+    }
+
+    @Override
+    public int delJudgeProblem(String jpid) {
+        return problemMapper.delJudgeProblem(jpid);
+    }
+
+    @Override
+    public int delSingleSelect(String spid) {
+        return problemMapper.delSingleSelect(spid);
+    }
+
+    @Override
+    public int delMultiSelect(String mpid) {
+        return problemMapper.delMultiSelect(mpid);
     }
 }

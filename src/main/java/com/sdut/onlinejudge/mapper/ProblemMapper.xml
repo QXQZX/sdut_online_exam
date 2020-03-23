@@ -26,7 +26,7 @@
         <where>
             <if test="keyWords != null">
                 <bind name="keywords" value="'%' + keyWords + '%'"/>
-                and title like #{keywords}
+                and hint like #{keywords}
             </if>
         </where>
     </select>
@@ -36,7 +36,7 @@
         <where>
             <if test="keyWords != null">
                 <bind name="keywords" value="'%' + keyWords + '%'"/>
-                and title like #{keywords}
+                and hint like #{keywords}
             </if>
         </where>
     </select>
@@ -46,7 +46,7 @@
         <where>
             <if test="keyWords != null">
                 <bind name="keywords" value="'%' + keyWords + '%'"/>
-                and title like #{keywords}
+                and hint like #{keywords}
             </if>
         </where>
     </select>
@@ -65,6 +65,18 @@
         insert into multi_selects(title, optionA, optionB, optionC, optionD, optionE, answer, hint)
         values (#{title}, #{optionA}, #{optionB}, #{optionC}, #{optionD}, #{optionE}, #{answer}, #{hint})
     </insert>
+
+    <delete id="delJudgeProblem" parameterType="string">
+        delete from judge_problems where jpid=#{jpid}
+    </delete>
+
+    <delete id="delSingleSelect" parameterType="string">
+        delete from single_selects where spid=#{spid}
+    </delete>
+
+    <delete id="delMultiSelect" parameterType="string">
+        delete from multi_selects where mpid=#{mpid}
+    </delete>
 
 
 </mapper>

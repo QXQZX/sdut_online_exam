@@ -125,6 +125,29 @@ public class AdminController {
         return resultKit;
     }
 
+    @GetMapping("deleteProblem")
+    @ResponseBody
+    public ResultKit delProblem(@RequestParam(value = "type", defaultValue = "single") String type,
+                                @RequestParam(value = "id") String id) {
+        ResultKit resultKit = new ResultKit();
+        System.out.println(type + id);
+        int flag = 0;
+        if (type.equals("single")) {
+            flag = problemService.delSingleSelect(id);
+        } else if (type.equals("judge")) {
+            flag = problemService.delJudgeProblem(id);
+        } else if (type.equals("multi")) {
+            flag = problemService.delMultiSelect(id);
+        }
+        resultKit.setCode(ResultCode.WRONG_UP.code());
+        resultKit.setMessage("删除失败");
+        if (flag == 1) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("删除成功");
+        }
+        return resultKit;
+    }
+
     @PostMapping("deploy")
     @ResponseBody
     public ResultKit deployNewContest(@RequestBody Map<String, String> contestInfo) {
@@ -242,7 +265,7 @@ public class AdminController {
     @GetMapping("import")
     @ResponseBody
     public ResultKit importProblemData(@RequestParam(value = "type", defaultValue = "single") String type) {
-        File file = new File("C:\\Users\\Devhui\\Documents\\Tencent Files\\501966782\\FileRecv\\辅导员题目\\多选题.xlsx");
+        File file = new File("C:\\Users\\Devhui\\Documents\\Tencent Files\\501966782\\FileRecv\\辅导员题目\\单选题.xlsx");
         try {
             XSSFWorkbook wb = new XSSFWorkbook(file);
             int sheets = wb.getNumberOfSheets();
@@ -268,7 +291,9 @@ public class AdminController {
                     cell.setCellType(CellType.STRING);
                 }
 
-                importMs(row);
+                importSs(row);
+//                importJp(row);
+//                importMs(row);
             }
         } catch (
                 InvalidFormatException e) {

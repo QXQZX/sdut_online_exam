@@ -5,6 +5,7 @@ import com.sdut.onlinejudge.model.StatKit;
 import com.sdut.onlinejudge.model.SubmitStat;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Devhui
@@ -21,4 +22,10 @@ public interface StatService {
 
     // 获取反馈列表
     List<FeedBack> getFeedBacks();
+
+    // 获取单选题来源统计
+    List<Map> getSingleHint();
+
+    // 获取多选题来源统计
+    List<Map> getMultiHint();
 }

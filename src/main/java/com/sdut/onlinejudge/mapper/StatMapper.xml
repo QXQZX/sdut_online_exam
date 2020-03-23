@@ -24,4 +24,13 @@
         select * from feedback
     </select>
 
+    <select id="getSingleHint" resultType="map">
+        SELECT hint, COUNT(hint) cnt FROM single_selects
+        GROUP BY hint ORDER BY cnt DESC
+    </select>
+
+    <select id="getMultiHint" resultType="map">
+        SELECT hint, COUNT(hint) cnt FROM multi_selects
+        GROUP BY hint ORDER BY cnt DESC
+    </select>
 </mapper>

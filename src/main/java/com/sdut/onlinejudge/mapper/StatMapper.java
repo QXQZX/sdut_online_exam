@@ -6,6 +6,7 @@ import com.sdut.onlinejudge.model.SubmitStat;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Devhui
@@ -22,4 +23,10 @@ public interface StatMapper {
 
     // 获取反馈列表
     List<FeedBack> getFeedBacks();
+
+    // 获取单选题来源统计
+    List<Map> getSingleHint();
+
+    // 获取多选题来源统计
+    List<Map> getMultiHint();
 }

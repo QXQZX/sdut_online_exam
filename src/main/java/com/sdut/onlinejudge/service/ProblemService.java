@@ -34,4 +34,13 @@ public interface ProblemService {
 
     // 添加判断选题
     int addJudgeProblem(JudgeProblem jp);
+
+    // 删除判断题
+    int delJudgeProblem(String jpid);
+
+    // 删除单选题
+    int delSingleSelect(String spid);
+
+    // 删除多选题
+    int delMultiSelect(String mpid);
 }

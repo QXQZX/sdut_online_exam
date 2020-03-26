@@ -3,6 +3,7 @@ package com.sdut.onlinejudge.service;
 import com.sdut.onlinejudge.model.JudgeProblem;
 import com.sdut.onlinejudge.model.MultiSelect;
 import com.sdut.onlinejudge.model.SingleSelect;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,13 @@ import java.util.Map;
  * @Date: 2019-12-04 19:34
  * @Version 1.0
  */
+
+@Repository
 public interface ProblemService {
     // 拉取整套题
     Map<String, Object> fetchProblems(Map<String, String> contestInfo);
+
+    Map<String, Object> fetchProblemsSelf(Map<String, Object> contestInfo);
 
     // 拉取单选题
     List<SingleSelect> getSingleSelects(String keyWords);

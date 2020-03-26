@@ -28,7 +28,6 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public Map<String, Object> fetchProblems(Map<String, String> contestInfo) {
         int singleCount = Integer.parseInt(contestInfo.get("singleCount"));
-        System.out.println(singleCount);
         int judgeCount = Integer.parseInt(contestInfo.get("judgeCount"));
         int multiCount = Integer.parseInt(contestInfo.get("multiCount"));
 
@@ -40,6 +39,25 @@ public class ProblemServiceImpl implements ProblemService {
         map.put("singleSelects", singleSelects);
         map.put("judgeProblems", judgeProblems);
         map.put("multiSelects", multiSelects);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> fetchProblemsSelf(Map<String, Object> contestInfo) {
+
+        List<Integer> singleSelectsIds = (List<Integer>) contestInfo.get("singleSelects");
+        List<Integer> multiSelectsIds = (List<Integer>) contestInfo.get("multiSelects");
+        List<Integer> judgeProblemsIds = (List<Integer>) contestInfo.get("judgeProblems");
+
+        HashMap<String, Object> map = new HashMap<>();
+        List<SingleSelect> singleSelects = problemMapper.getSingleSelectsSelf(singleSelectsIds);
+        List<MultiSelect> multiSelects = problemMapper.getMultiSelectsSelf(multiSelectsIds);
+        List<JudgeProblem> judgeProblems = problemMapper.getJudgeProblemSelf(judgeProblemsIds);
+
+        map.put("singleSelects", singleSelects);
+        map.put("judgeProblems", judgeProblems);
+        map.put("multiSelects", multiSelects);
+
         return map;
     }
 

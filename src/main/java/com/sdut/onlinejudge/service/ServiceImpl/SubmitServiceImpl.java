@@ -34,7 +34,7 @@ public class SubmitServiceImpl implements SubmitService {
     }
 
     @Override
-    public int addScore(int score, String username) {
+    public int addScore(float score, String username) {
         return submitMapper.addScore(score, username);
     }
 }

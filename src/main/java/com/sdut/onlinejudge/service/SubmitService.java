@@ -18,5 +18,5 @@ public interface SubmitService {
     int addSubmit(Submit submit);
 
     // 加分操作
-    int addScore(int score, String username);
+    int addScore(float score, String username);
 }

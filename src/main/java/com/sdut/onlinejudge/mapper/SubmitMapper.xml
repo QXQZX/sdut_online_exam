@@ -18,8 +18,7 @@
         insert into submits values (#{uid}, #{cid}, #{answers}, #{score}, #{submitTime})
     </insert>
 
-
     <update id="addScore">
-        update userInfo set score=score+#{score}, times=times+1  where username=#{username}
+        update userinfo set score=score+#{score}, times=times+1  where username=#{username}
     </update>
 </mapper>

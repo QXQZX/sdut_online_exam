@@ -24,4 +24,8 @@
     <select id="getAnswerByCid" resultType="string" parameterType="int">
         select answers from contests where cid=#{cid}
     </select>
+
+    <select id="getProblemScore" resultType="map" parameterType="int">
+        select singleScore, multiScore, judgeScore from contests where cid=#{cid}
+    </select>
 </mapper>

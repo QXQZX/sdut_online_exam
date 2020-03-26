@@ -21,6 +21,32 @@
         ORDER BY jpid LIMIT 0, #{count}
     </select>
 
+
+    <select id="getSingleSelectsSelf" parameterType="list" resultType="singleSelect">
+        select * from single_selects
+        where spid in
+        <foreach collection="ids" item="name" index="index" open="(" close=")" separator=",">
+            #{name}
+        </foreach>
+    </select>
+
+    <select id="getMultiSelectsSelf" parameterType="list" resultType="multiSelect">
+        select * from multi_selects
+        where mpid in
+        <foreach collection="ids" item="name" index="index" open="(" close=")" separator=",">
+            #{name}
+        </foreach>
+    </select>
+
+    <select id="getJudgeProblemSelf" parameterType="list" resultType="judgeProblem">
+        select * from judge_problems
+        where jpid in
+        <foreach collection="ids" item="name" index="index" open="(" close=")" separator=",">
+            #{name}
+        </foreach>
+    </select>
+
+
     <select id="getSingleSelects" parameterType="string" resultType="singleSelect">
         select * from single_selects
         <where>

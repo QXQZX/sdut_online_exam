@@ -12,9 +12,9 @@ import java.util.Date;
 @Data
 public class Submit {
     private String uid;
-    private int cid;
+    private Integer cid;
     private String answers;
-    private int score;
+    private Float score;
     private Date submitTime;
     private Integer rank;
 }

@@ -21,5 +21,5 @@ public interface SubmitMapper {
     int addSubmit(Submit submit);
 
     // 加分操作
-    int addScore(@Param("score") int score, @Param("username") String username);
+    int addScore(@Param("score") float score, @Param("username") String username);
 }

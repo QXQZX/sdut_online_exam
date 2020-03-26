@@ -3,6 +3,7 @@ package com.sdut.onlinejudge.mapper;
 import com.sdut.onlinejudge.model.JudgeProblem;
 import com.sdut.onlinejudge.model.MultiSelect;
 import com.sdut.onlinejudge.model.SingleSelect;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,6 +21,13 @@ public interface ProblemMapper {
     List<MultiSelect> fetchMultiSelects(int count);
 
     List<JudgeProblem> fetchJudgeProblem(int count);
+
+    // 目的性抽取题目
+    List<SingleSelect> getSingleSelectsSelf(@Param("ids") List ids);
+
+    List<MultiSelect> getMultiSelectsSelf(@Param("ids") List ids);
+
+    List<JudgeProblem> getJudgeProblemSelf(@Param("ids") List ids);
 
     // 拉取所有题目
     List<SingleSelect> getSingleSelects(String keyWords);

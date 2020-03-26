@@ -4,6 +4,7 @@ import com.sdut.onlinejudge.model.Contest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Devhui
@@ -20,4 +21,7 @@ public interface ContestMapper {
     String getContestByCid(int cid);
 
     String getAnswerByCid(int cid);
+
+    // 根据cid获取题目分数信息
+    Map<String, Float> getProblemScore(int cid);
 }

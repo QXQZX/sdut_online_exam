@@ -30,7 +30,7 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public List<SubmitStat> getStatByCid(String cid) {
+    public List<SubmitStat> getStatByCid(int cid) {
         return statMapper.getStatByCid(cid);
     }
 

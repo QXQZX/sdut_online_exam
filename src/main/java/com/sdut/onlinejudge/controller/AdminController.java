@@ -60,6 +60,7 @@ public class AdminController {
         String username = (String) json.get("username");
         String password = (String) json.get("password");
 
+        System.out.println(json);
         ResultKit<Object> resultKit = new ResultKit<>();
         Admin admin = adminService.loginCheck(username, password);
         if (admin != null) {
@@ -154,6 +155,23 @@ public class AdminController {
         ResultKit<Integer> resultKit = new ResultKit<>();
         System.out.println("contestInfo = " + contestInfo);
         int i = contestService.deployContest(contestInfo);
+        System.out.println("i = " + i);
+        if (i == 1) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("新测试发布成功");
+        } else {
+            resultKit.setCode(ResultCode.WRONG_UP.code());
+            resultKit.setMessage("新测试发布失败");
+        }
+        return resultKit;
+    }
+
+    @PostMapping("deploySelf")
+    @ResponseBody
+    public ResultKit deployNewContest1(@RequestBody Map<String, Object> contestInfo) {
+        ResultKit<Integer> resultKit = new ResultKit<>();
+        System.out.println("contestInfo = " + contestInfo);
+        int i = contestService.deployContestSelf(contestInfo);
         System.out.println("i = " + i);
         if (i == 1) {
             resultKit.setCode(ResultCode.SUCCESS.code());
@@ -265,7 +283,7 @@ public class AdminController {
     @GetMapping("import")
     @ResponseBody
     public ResultKit importProblemData(@RequestParam(value = "type", defaultValue = "single") String type) {
-        File file = new File("C:\\Users\\Devhui\\Documents\\Tencent Files\\501966782\\FileRecv\\辅导员题目\\单选题.xlsx");
+        File file = new File("C:\\Users\\Devhui\\Documents\\Tencent Files\\501966782\\FileRecv\\辅导员题目\\判断题.xlsx");
         try {
             XSSFWorkbook wb = new XSSFWorkbook(file);
             int sheets = wb.getNumberOfSheets();
@@ -291,8 +309,8 @@ public class AdminController {
                     cell.setCellType(CellType.STRING);
                 }
 
-                importSs(row);
-//                importJp(row);
+//                importSs(row);
+                importJp(row);
 //                importMs(row);
             }
         } catch (

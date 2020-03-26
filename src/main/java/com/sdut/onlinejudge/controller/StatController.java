@@ -48,7 +48,7 @@ public class StatController {
 
     @GetMapping("contestStat/{cid}")
     @ResponseBody
-    public ResultKit getContestStat(@PathVariable("cid") String cid) {
+    public ResultKit getContestStat(@PathVariable("cid") Integer cid) {
         ResultKit<List> resultKit = new ResultKit<>();
         List<SubmitStat> contestStat = statService.getStatByCid(cid);
         System.out.println(contestStat);

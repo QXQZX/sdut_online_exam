@@ -18,7 +18,7 @@ public interface StatService {
     StatKit getStat();
 
     // 根据cid获取单次测试统计信息
-    List<SubmitStat> getStatByCid(String cid);
+    List<SubmitStat> getStatByCid(int cid);
 
     // 获取反馈列表
     List<FeedBack> getFeedBacks();

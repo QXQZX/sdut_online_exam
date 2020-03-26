@@ -20,6 +20,11 @@ public interface ContestService {
     // 发布新的测试
     int deployContest(Map<String, String> contestInfo);
 
+    int deployContestSelf(Map<String, Object> contestInfo);
+
     // 根据cid获取答案信息
     Map<String, Object> getAnswerByCid(int cid);
+
+    // 根据cid获取题目分数信息
+    Map<String, Float> getProblemScore(int cid);
 }

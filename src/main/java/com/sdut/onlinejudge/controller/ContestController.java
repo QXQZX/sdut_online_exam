@@ -47,7 +47,7 @@ where x.from1!=y.from1
         ResultKit<Map> resultKit = new ResultKit<>();
 
         String orderBy = "cid" + " desc";//按照（数据库）排序字段 倒序 排序
-        PageHelper.startPage(pageNum, 3, orderBy);
+        PageHelper.startPage(pageNum, 10, orderBy);
 
         List<Contest> allContest = contestService.findAll(keyWords);
         // 将查询到的数据封装到PageInfo对象
@@ -86,11 +86,14 @@ where x.from1!=y.from1
                                    @RequestParam(value = "time", required = false) String date,
                                    @RequestBody String userAns) {
         Date submitTime = JSON.parseObject(date, Date.class);
-        ResultKit<Integer> resultKit = new ResultKit();
+        ResultKit<Float> resultKit = new ResultKit();
         if (submitService.hasSubmit(uid, cid) == null) {
             Map userAnsMap = JSON.parseObject(userAns, Map.class);
-            Map<String, Object> answer = contestService.getAnswerByCid(cid);
-            int score = judgeCore(userAnsMap, answer);
+
+            Map<String, Object> answer = contestService.getAnswerByCid(cid); //答案信息
+            Map<String, Float> problemScore = contestService.getProblemScore(cid); // 分数信息
+
+            float score = judgeCore(userAnsMap, answer, problemScore);
             System.out.println("======得分====" + score);
 
             Submit submit = new Submit();
@@ -111,12 +114,12 @@ where x.from1!=y.from1
             } else {
                 resultKit.setCode(ResultCode.WRONG_UP.code());
                 resultKit.setMessage("判题失败, 请勿重复提交");
-                resultKit.setData(-1);
+                resultKit.setData(-1f);
             }
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
             resultKit.setMessage("已经提交, 请勿重复提交");
-            resultKit.setData(-1);
+            resultKit.setData(-1f);
         }
         return resultKit;
     }
@@ -145,8 +148,13 @@ where x.from1!=y.from1
         return resultKit;
     }
 
-    private int judgeCore(Map uAnswer, Map answer) {
-        int socre = 0;
+    private float judgeCore(Map uAnswer, Map answer, Map<String, Float> problemScore) {
+
+        Float singleScore = problemScore.get("singleScore");
+        Float judgeScore = problemScore.get("judgeScore");
+        Float multiScore = problemScore.get("multiScore");
+
+        float socre = 0;
         List<String> judgeProblems = (List<String>) uAnswer.get("judgeProblems"); // 用户判断题答案
         List<String> jAns = (List<String>) answer.get("judgeAns"); //数据库判断题答案
         for (int i = 0; i < judgeProblems.size(); i++) {
@@ -154,7 +162,7 @@ where x.from1!=y.from1
             String tAns = jAns.get(i);
             if (uAns.equals(tAns)) {
                 System.out.println(uAns.equals(tAns));
-                socre += 1;
+                socre += judgeScore;
             }
         }
         List<String> multiSelects = (List<String>) uAnswer.get("multiSelects");
@@ -164,7 +172,7 @@ where x.from1!=y.from1
             String tAns = mAns.get(i);
             if (uAns.equals(tAns)) {
                 System.out.println(uAns.equals(tAns));
-                socre += 1;
+                socre += multiScore;
             }
         }
         List<String> singleSelects = (List<String>) uAnswer.get("singleSelects");
@@ -174,10 +182,9 @@ where x.from1!=y.from1
             String tAns = sAns.get(i);
             if (uAns.equals(tAns)) {
                 System.out.println(uAns.equals(tAns));
-                socre += 1;
+                socre += singleScore;
             }
         }
-
         return socre;
     }
 

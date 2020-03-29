@@ -50,14 +50,24 @@ public class ProblemServiceImpl implements ProblemService {
         List<Integer> judgeProblemsIds = (List<Integer>) contestInfo.get("judgeProblems");
 
         HashMap<String, Object> map = new HashMap<>();
-        List<SingleSelect> singleSelects = problemMapper.getSingleSelectsSelf(singleSelectsIds);
-        List<MultiSelect> multiSelects = problemMapper.getMultiSelectsSelf(multiSelectsIds);
-        List<JudgeProblem> judgeProblems = problemMapper.getJudgeProblemSelf(judgeProblemsIds);
-
-        map.put("singleSelects", singleSelects);
-        map.put("judgeProblems", judgeProblems);
-        map.put("multiSelects", multiSelects);
-
+        if (singleSelectsIds != null) {
+            List<SingleSelect> singleSelects = problemMapper.getSingleSelectsSelf(singleSelectsIds);
+            map.put("singleSelects", singleSelects);
+        } else {
+            map.put("singleSelects", null);
+        }
+        if (multiSelectsIds != null) {
+            List<MultiSelect> multiSelects = problemMapper.getMultiSelectsSelf(multiSelectsIds);
+            map.put("multiSelects", multiSelects);
+        } else {
+            map.put("multiSelects", null);
+        }
+        if (judgeProblemsIds != null) {
+            List<JudgeProblem> judgeProblems = problemMapper.getJudgeProblemSelf(judgeProblemsIds);
+            map.put("judgeProblems", judgeProblems);
+        } else {
+            map.put("judgeProblems", null);
+        }
         return map;
     }
 

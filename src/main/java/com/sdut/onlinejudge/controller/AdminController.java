@@ -149,6 +149,22 @@ public class AdminController {
         return resultKit;
     }
 
+
+    @GetMapping("deleteContest/{cid}")
+    @ResponseBody
+    public ResultKit delContest(@PathVariable(value = "cid") int cid) {
+        ResultKit resultKit = new ResultKit();
+        System.out.println(cid);
+        int flag = contestService.deleteContest(cid);
+        resultKit.setCode(ResultCode.WRONG_UP.code());
+        resultKit.setMessage("删除失败");
+        if (flag == 1) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("删除成功");
+        }
+        return resultKit;
+    }
+
     @PostMapping("deploy")
     @ResponseBody
     public ResultKit deployNewContest(@RequestBody Map<String, String> contestInfo) {

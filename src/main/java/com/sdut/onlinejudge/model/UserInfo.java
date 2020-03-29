@@ -13,6 +13,6 @@ public class UserInfo {
     String name; // 姓名
     String gender; // 性别
     String college; // 学院
-    int score; // 得分
-    int times; // 测试次数
+    Float score; // 得分
+    Integer times; // 测试次数
 }

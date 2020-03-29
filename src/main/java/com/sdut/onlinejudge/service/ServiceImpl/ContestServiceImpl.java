@@ -119,38 +119,54 @@ public class ContestServiceImpl implements ContestService {
         return contestMapper.getProblemScore(cid);
     }
 
+    @Override
+    public int deleteContest(int cid) {
+        return contestMapper.deleteContest(cid);
+    }
+
 
     private Contest separate(Map contestInfo, Map map) {
+        System.out.println(map);
         Answer answer = new Answer(); // 答案
+        answer.setSingleSelectsAns(null);
+        answer.setJudgeAns(null);
+        answer.setMultiSelectsAns(null);
+
+
         List<SingleSelect> singleSelects = (List<SingleSelect>) map.get("singleSelects");
         List<JudgeProblem> judgeProblems = (List<JudgeProblem>) map.get("judgeProblems");
         List<MultiSelect> multiSelects = (List<MultiSelect>) map.get("multiSelects");
 
         // 题目答案分离
         ArrayList<String> sans = new ArrayList<>();
-        for (SingleSelect s : singleSelects) {
-            sans.add(s.getAnswer());
-            s.setAnswer(null);
+        if (singleSelects != null) {
+            for (SingleSelect s : singleSelects) {
+                sans.add(s.getAnswer());
+                s.setAnswer(null);
+            }
+            map.put("singleSelects", singleSelects);
+            answer.setSingleSelectsAns(sans);
         }
         ArrayList<String> mans = new ArrayList<>();
-        for (MultiSelect s : multiSelects) {
-            mans.add(s.getAnswer());
-            s.setAnswer(null);
+        if (multiSelects != null) {
+            for (MultiSelect s : multiSelects) {
+                mans.add(s.getAnswer());
+                s.setAnswer(null);
+            }
+            map.put("multiSelects", multiSelects);
+            answer.setMultiSelectsAns(mans);
         }
         ArrayList<String> jans = new ArrayList<>();
-        for (JudgeProblem s : judgeProblems) {
-            jans.add(s.getAnswer());
-            s.setAnswer(null);
+        if (judgeProblems != null) {
+            for (JudgeProblem s : judgeProblems) {
+                jans.add(s.getAnswer());
+                s.setAnswer(null);
+            }
+            map.put("judgeProblems", judgeProblems);
+            answer.setJudgeAns(jans);
         }
-        // 题目
-        map.put("singleSelects", singleSelects);
-        map.put("judgeProblems", judgeProblems);
-        map.put("multiSelects", multiSelects);
-
         // 答案
-        answer.setSingleSelectsAns(sans);
-        answer.setJudgeAns(jans);
-        answer.setMultiSelectsAns(mans);
+        System.out.println("answer = " + answer);
 
         String startTime = (String) contestInfo.get("startTime");
         String endTime = (String) contestInfo.get("endTime");
@@ -160,14 +176,15 @@ public class ContestServiceImpl implements ContestService {
             contest.setCname((String) contestInfo.get("cname"));
             contest.setStartTime(DateUtil.dateFormat(startTime));
             contest.setEndTime(DateUtil.dateFormat(endTime));
-            contest.setJudgeScore(new Float((String) contestInfo.get("judgeScore")));
-            contest.setSingleScore(new Float((String) contestInfo.get("singleScore")));
-            contest.setMultiScore(new Float((String) contestInfo.get("multiScore")));
+            contest.setJudgeScore(new Float(String.valueOf(contestInfo.get("judgeScore"))));
+            contest.setSingleScore(new Float(String.valueOf(contestInfo.get("singleScore"))));
+            contest.setMultiScore(new Float(String.valueOf(contestInfo.get("multiScore"))));
             contest.setProblems(JSON.toJSONString(map));
             contest.setAnswers(JSON.toJSONString(answer));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println("contest = " + contest);
         return contest;
     }
 

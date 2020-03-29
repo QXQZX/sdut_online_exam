@@ -27,4 +27,7 @@ public interface ContestService {
 
     // 根据cid获取题目分数信息
     Map<String, Float> getProblemScore(int cid);
+
+    // 删除测试
+    int deleteContest(int cid);
 }

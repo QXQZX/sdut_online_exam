@@ -28,4 +28,8 @@
     <select id="getProblemScore" resultType="map" parameterType="int">
         select singleScore, multiScore, judgeScore from contests where cid=#{cid}
     </select>
+
+    <delete id="deleteContest" parameterType="int">
+        delete from contests where cid=#{cid}
+    </delete>
 </mapper>

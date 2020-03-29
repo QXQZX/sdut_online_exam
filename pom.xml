@@ -10,9 +10,9 @@
     </parent>
     <groupId>com.sdut</groupId>
     <artifactId>onlinejudge</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <name>onlinejudge</name>
-    <description>An OnlineJudge project for SDUT</description>
+    <description>An OnlineExam project for SDUT</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

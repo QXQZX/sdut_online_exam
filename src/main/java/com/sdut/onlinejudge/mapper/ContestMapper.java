@@ -24,4 +24,6 @@ public interface ContestMapper {
 
     // 根据cid获取题目分数信息
     Map<String, Float> getProblemScore(int cid);
+
+    int deleteContest(int cid);
 }

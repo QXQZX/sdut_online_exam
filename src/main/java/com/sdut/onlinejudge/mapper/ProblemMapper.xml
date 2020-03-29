@@ -23,7 +23,8 @@
 
 
     <select id="getSingleSelectsSelf" parameterType="list" resultType="singleSelect">
-        select * from single_selects
+
+    select * from single_selects
         where spid in
         <foreach collection="ids" item="name" index="index" open="(" close=")" separator=",">
             #{name}

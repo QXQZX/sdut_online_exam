@@ -127,24 +127,26 @@ where x.from1!=y.from1
     @GetMapping("check/cid/{cid}/{uid}")
     @ResponseBody
     public ResultKit checkResult(@PathVariable("uid") String uid, @PathVariable("cid") int cid, HttpServletRequest req) {
-        Submit submit = submitService.getSubmit(uid, cid); // 获取用户提交信息
-        Map<String, Object> answerByCid = contestService.getAnswerByCid(cid); // 获取答案
-        Map<String, Object> contestByCid = contestService.getContestByCid(cid); // 获取测试题目信息
-        Map uSubmit = JSON.parseObject(submit.getAnswers(), Map.class); // 获取用户提交的答案
-
-
-        System.out.println("submit" + submit);
-        Map<String, Object> result = new HashMap<>();
-        result.put("problems", contestByCid);
-        result.put("answer", answerByCid);
-        result.put("uSubmit", uSubmit);
-        result.put("score", submit.getScore());
-        result.put("rank", submit.getRank());
-
         ResultKit<Map> resultKit = new ResultKit<>();
-        resultKit.setMessage("获取用户提交和答案成功。");
-        resultKit.setCode(ResultCode.SUCCESS.code());
-        resultKit.setData(result);
+        Submit submit = submitService.getSubmit(uid, cid); // 获取用户提交信息
+        if (submit != null) {
+            Map<String, Object> answerByCid = contestService.getAnswerByCid(cid); // 获取答案
+            Map<String, Object> contestByCid = contestService.getContestByCid(cid); // 获取测试题目信息
+            Map uSubmit = JSON.parseObject(submit.getAnswers(), Map.class); // 获取用户提交的答案
+            System.out.println("submit" + submit);
+            Map<String, Object> result = new HashMap<>();
+            result.put("problems", contestByCid);
+            result.put("answer", answerByCid);
+            result.put("uSubmit", uSubmit);
+            result.put("score", submit.getScore());
+            result.put("rank", submit.getRank());
+            resultKit.setMessage("获取用户提交和答案成功。");
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setData(result);
+        } else {
+            resultKit.setMessage("未提交过。");
+            resultKit.setCode(ResultCode.WRONG_UP.code());
+        }
         return resultKit;
     }
 

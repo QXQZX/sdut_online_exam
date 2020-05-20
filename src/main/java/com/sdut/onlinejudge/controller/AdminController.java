@@ -15,6 +15,7 @@ import com.sdut.onlinejudge.service.AdminService;
 import com.sdut.onlinejudge.service.ContestService;
 import com.sdut.onlinejudge.service.ProblemService;
 import com.sdut.onlinejudge.service.UserService;
+import com.sdut.onlinejudge.utils.DateUtil;
 import com.sdut.onlinejudge.utils.ExcelUtils;
 import com.sdut.onlinejudge.utils.JwtUtils;
 import com.sdut.onlinejudge.utils.ResultCode;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +61,6 @@ public class AdminController {
         JSONObject json = JSON.parseObject(param);
         String username = (String) json.get("username");
         String password = (String) json.get("password");
-
-        System.out.println(json);
         ResultKit<Object> resultKit = new ResultKit<>();
         Admin admin = adminService.loginCheck(username, password);
         if (admin != null) {
@@ -97,9 +97,7 @@ public class AdminController {
                                  @RequestParam(value = "type", defaultValue = "single") String type,
                                  @RequestParam(value = "keyWords", required = false) String keyWords) {
         ResultKit<Map> resultKit = new ResultKit<>();
-//        String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
         PageHelper.startPage(pageNum, 10);
-        System.out.println("type=" + type + " keyWords=" + keyWords);
         List list = null;
         long total = 0;
         Map<String, Object> map = new HashMap<>();
@@ -131,7 +129,7 @@ public class AdminController {
     public ResultKit delProblem(@RequestParam(value = "type", defaultValue = "single") String type,
                                 @RequestParam(value = "id") String id) {
         ResultKit resultKit = new ResultKit();
-        System.out.println(type + id);
+
         int flag = 0;
         if (type.equals("single")) {
             flag = problemService.delSingleSelect(id);
@@ -154,7 +152,7 @@ public class AdminController {
     @ResponseBody
     public ResultKit delContest(@PathVariable(value = "cid") int cid) {
         ResultKit resultKit = new ResultKit();
-        System.out.println(cid);
+
         int flag = contestService.deleteContest(cid);
         resultKit.setCode(ResultCode.WRONG_UP.code());
         resultKit.setMessage("删除失败");
@@ -169,9 +167,8 @@ public class AdminController {
     @ResponseBody
     public ResultKit deployNewContest(@RequestBody Map<String, String> contestInfo) {
         ResultKit<Integer> resultKit = new ResultKit<>();
-        System.out.println("contestInfo = " + contestInfo);
+
         int i = contestService.deployContest(contestInfo);
-        System.out.println("i = " + i);
         if (i == 1) {
             resultKit.setCode(ResultCode.SUCCESS.code());
             resultKit.setMessage("新测试发布成功");
@@ -182,13 +179,36 @@ public class AdminController {
         return resultKit;
     }
 
+    @PostMapping("updateContest")
+    @ResponseBody
+    public ResultKit updateContest(@RequestBody Map<String, String> contestInfo) {
+        ResultKit<Integer> resultKit = new ResultKit<>();
+        Contest contest = new Contest();
+        contest.setCname(contestInfo.get("cname"));
+        contest.setCid(contestInfo.get("cid"));
+        try {
+            contest.setStartTime(DateUtil.dateFormat(contestInfo.get("startTime")));
+            contest.setEndTime(DateUtil.dateFormat(contestInfo.get("endTime")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int i = contestService.updateContest(contest);
+        if (i == 1) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+        } else {
+            resultKit.setCode(ResultCode.WRONG_UP.code());
+        }
+        return resultKit;
+    }
+
+
     @PostMapping("deploySelf")
     @ResponseBody
     public ResultKit deployNewContest1(@RequestBody Map<String, Object> contestInfo) {
         ResultKit<Integer> resultKit = new ResultKit<>();
-        System.out.println("contestInfo = " + contestInfo);
+
         int i = contestService.deployContestSelf(contestInfo);
-        System.out.println("i = " + i);
+
         if (i == 1) {
             resultKit.setCode(ResultCode.SUCCESS.code());
             resultKit.setMessage("新测试发布成功");
@@ -206,11 +226,11 @@ public class AdminController {
         ResultKit resultKit = new ResultKit();
         int i = adminService.updateUserInfo(userInfo);
         resultKit.setCode(ResultCode.WRONG_UP.code());
-        System.out.println("信息修改" + i);
-        resultKit.setMessage("信息修改失败！");
+
+        resultKit.setMessage("信息修改失败");
         if (i == 1) {
             resultKit.setCode(ResultCode.SUCCESS.code());
-            resultKit.setMessage("信息修改成功！");
+            resultKit.setMessage("信息修改成功");
         }
         return resultKit;
     }
@@ -234,12 +254,12 @@ public class AdminController {
     public ResultKit delUser(@PathVariable("uid") String uid) {
         ResultKit resultKit = new ResultKit();
         int i = adminService.deleteUser(uid);
-        System.out.println("删除标志" + i);
+
         resultKit.setCode(ResultCode.WRONG_UP.code());
-        resultKit.setMessage("删除用户失败！");
+        resultKit.setMessage("删除用户失败");
         if (i == 1) {
             resultKit.setCode(ResultCode.SUCCESS.code());
-            resultKit.setMessage("删除用户成功！");
+            resultKit.setMessage("删除用户成功");
         }
         return resultKit;
     }
@@ -250,10 +270,10 @@ public class AdminController {
         ResultKit resultKit = new ResultKit();
         int i = adminService.addUser(userInfo);
         resultKit.setCode(ResultCode.WRONG_UP.code());
-        resultKit.setMessage("添加用户失败！");
+        resultKit.setMessage("添加用户失败");
         if (i == 1) {
             resultKit.setCode(ResultCode.SUCCESS.code());
-            resultKit.setMessage("添加用户成功！");
+            resultKit.setMessage("添加用户成功");
         }
         return resultKit;
     }
@@ -282,7 +302,6 @@ public class AdminController {
             i = problemService.addSingleSelects(singleSelect);
         } else if (type.equals("judge")) {
             JudgeProblem judgeProblem = JSONObject.parseObject(param, JudgeProblem.class);
-            System.out.println("judgeProblem = " + judgeProblem);
             i = problemService.addJudgeProblem(judgeProblem);
         } else if (type.equals("multi")) {
             MultiSelect multiSelect = JSONObject.parseObject(param, MultiSelect.class);
@@ -299,7 +318,7 @@ public class AdminController {
     @GetMapping("import")
     @ResponseBody
     public ResultKit importProblemData(@RequestParam(value = "type", defaultValue = "single") String type) {
-        File file = new File("C:\\Users\\Devhui\\Documents\\Tencent Files\\501966782\\FileRecv\\辅导员题目\\判断题.xlsx");
+        File file = new File("C:\\Users\\Devhui\\Documents\\Tencent Files\\501966782\\FileRecv\\辅导员题目\\多选题.xlsx");
         try {
             XSSFWorkbook wb = new XSSFWorkbook(file);
             int sheets = wb.getNumberOfSheets();
@@ -326,8 +345,8 @@ public class AdminController {
                 }
 
 //                importSs(row);
-                importJp(row);
-//                importMs(row);
+//                importJp(row);
+                importMs(row);
             }
         } catch (
                 InvalidFormatException e) {
@@ -345,57 +364,60 @@ public class AdminController {
     // 批量插入判断题
     private void importJp(Row row) {
         // 创建单选题对象
-        JudgeProblem judgeProblem = new JudgeProblem(
-                row.getCell(0).getStringCellValue(),
-                row.getCell(1).getStringCellValue(),
-                row.getCell(2).getStringCellValue(),
-                row.getCell(3).getStringCellValue(),
-                row.getCell(4).getStringCellValue()
-        );
-        int i1 = problemService.addJudgeProblem(judgeProblem);
-        System.out.println(i1);
+//        JudgeProblem judgeProblem = new JudgeProblem(
+//                row.getCell(0).getStringCellValue(),
+//                row.getCell(1).getStringCellValue(),
+//                row.getCell(2).getStringCellValue(),
+//                row.getCell(3).getStringCellValue(),
+//                row.getCell(4).getStringCellValue()
+//        );
+//        int i1 = problemService.addJudgeProblem(judgeProblem);
+//        System.out.println(i1);
     }
 
     // 批量插入单选题
     private void importSs(Row row) {
-        SingleSelect ss = new SingleSelect(
-                row.getCell(0).getStringCellValue(),
-                row.getCell(1).getStringCellValue(),
-                row.getCell(2).getStringCellValue(),
-                row.getCell(3).getStringCellValue(),
-                row.getCell(4).getStringCellValue(),
-                row.getCell(5).getStringCellValue(),
-                row.getCell(6).getStringCellValue(),
-                row.getCell(7).getStringCellValue()
-        );
-        int i1 = problemService.addSingleSelects(ss);
+//        SingleSelect ss = new SingleSelect(
+//                row.getCell(0).getStringCellValue(),
+//                row.getCell(1).getStringCellValue(),
+//                row.getCell(2).getStringCellValue(),
+//                row.getCell(3).getStringCellValue(),
+//                row.getCell(4).getStringCellValue(),
+//                row.getCell(5).getStringCellValue(),
+//                row.getCell(6).getStringCellValue(),
+//                row.getCell(7).getStringCellValue(),
+//                row.getCell(8).getStringCellValue()
+//        );
+//        int i1 = problemService.addSingleSelects(ss);
     }
 
     // 批量插入多选题
     private void importMs(Row row) {
-        String answers = row.getCell(6).getStringCellValue();
-
-        if (answers.contains(",")) {
-        } else {
-            char[] chars = answers.toCharArray();
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < chars.length; i++) {
-                sb.append(chars[i]);
-                if (i != chars.length - 1)
-                    sb.append(",");
-            }
-            answers = sb.toString();
-        }
-        MultiSelect ss = new MultiSelect(
-                row.getCell(0).getStringCellValue(),
-                row.getCell(1).getStringCellValue(),
-                row.getCell(2).getStringCellValue(),
-                row.getCell(3).getStringCellValue(),
-                row.getCell(4).getStringCellValue(),
-                row.getCell(5).getStringCellValue(),
-                answers,
-                row.getCell(7).getStringCellValue()
-        );
-        int i1 = problemService.addMultiSelects(ss);
+//        String answers = row.getCell(6).getStringCellValue();
+//
+//        if (answers.contains(",")) {
+//        } else {
+//            char[] chars = answers.toCharArray();
+//            StringBuilder sb = new StringBuilder();
+//            for (int i = 0; i < chars.length; i++) {
+//                sb.append(chars[i]);
+//                if (i != chars.length - 1)
+//                    sb.append(",");
+//            }
+//            answers = sb.toString();
+//        }
+//        MultiSelect ss = new MultiSelect(
+//                row.getCell(0).getStringCellValue(),
+//                row.getCell(1).getStringCellValue(),
+//                row.getCell(2).getStringCellValue(),
+//                row.getCell(3).getStringCellValue(),
+//                row.getCell(4).getStringCellValue(),
+//                row.getCell(5).getStringCellValue(),
+//                answers,
+//                row.getCell(7).getStringCellValue(),
+//                row.getCell(8).getStringCellValue()
+//        );
+////        int i1 = problemService.addMultiSelects(ss);
+//        System.out.println(answers);
     }
 }

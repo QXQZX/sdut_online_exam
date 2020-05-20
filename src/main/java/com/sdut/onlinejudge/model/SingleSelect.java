@@ -13,9 +13,9 @@ public class SingleSelect {
     String optionE;
     String answer;
     String hint;
+    String label;
 
-    public SingleSelect(String title, String optionA, String optionB,
-                        String optionC, String optionD, String optionE, String answer, String hint) {
+    public SingleSelect(String title, String optionA, String optionB, String optionC, String optionD, String optionE, String answer, String hint, String label) {
         this.title = title;
         this.optionA = optionA;
         this.optionB = optionB;
@@ -24,5 +24,6 @@ public class SingleSelect {
         this.optionE = optionE;
         this.answer = answer;
         this.hint = hint;
+        this.label = label;
     }
 }

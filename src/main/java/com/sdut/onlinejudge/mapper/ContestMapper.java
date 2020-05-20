@@ -25,5 +25,12 @@ public interface ContestMapper {
     // 根据cid获取题目分数信息
     Map<String, Float> getProblemScore(int cid);
 
+    // 获取测试时间信息
+    Map<String, Object> getContestTime(int cid);
+
+    // 删除测试
     int deleteContest(int cid);
+
+    // 更新测试信息
+    int updateContest(Contest contest);
 }

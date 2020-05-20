@@ -32,9 +32,9 @@ public class ProblemServiceImpl implements ProblemService {
         int multiCount = Integer.parseInt(contestInfo.get("multiCount"));
 
         HashMap<String, Object> map = new HashMap<>();
-        List<SingleSelect> singleSelects = problemMapper.fetchSingleSelects(singleCount);
-        List<JudgeProblem> judgeProblems = problemMapper.fetchJudgeProblem(judgeCount);
-        List<MultiSelect> multiSelects = problemMapper.fetchMultiSelects(multiCount);
+        List<SingleSelect> singleSelects = problemMapper.fetchSingleSelects(singleCount, null);
+        List<JudgeProblem> judgeProblems = problemMapper.fetchJudgeProblem(judgeCount, null);
+        List<MultiSelect> multiSelects = problemMapper.fetchMultiSelects(multiCount, null);
 
         map.put("singleSelects", singleSelects);
         map.put("judgeProblems", judgeProblems);

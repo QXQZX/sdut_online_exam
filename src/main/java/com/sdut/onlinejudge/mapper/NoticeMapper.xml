@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdut.onlinejudge.mapper.NoticeMapper">
+
+    <select id="fetchNotices" resultType="notice">
+        select * from admin_notice order by dateTime desc
+    </select>
+
+    <insert id="addNotice" parameterType="notice">
+        insert into admin_notice(content, dateTime, type)
+        values (#{content}, NOW(), #{type})
+    </insert>
+
+    <delete id="deleteNotice" parameterType="int">
+        delete from admin_notice where nid=#{nid}
+    </delete>
+
+    <update id="updateNotice">
+        update admin_notice set status=#{status} where nid=#{nid}
+    </update>
+</mapper>

@@ -1,9 +1,6 @@
 package com.sdut.onlinejudge.mapper;
 
-import com.sdut.onlinejudge.model.FeedBack;
-import com.sdut.onlinejudge.model.Notice;
-import com.sdut.onlinejudge.model.User;
-import com.sdut.onlinejudge.model.UserInfo;
+import com.sdut.onlinejudge.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +18,9 @@ public interface UserMapper {
 
     // 获取所有用户信息
     List<UserInfo> findAllUsers(@Param("Uname") String Uname, @Param("CollegeName") String CollegeName);
+
+    // 获取练习统计
+    List<TrainStat> getTrainStat(String uid);
 
     // 注册
     int register(User user);

@@ -7,7 +7,7 @@ import com.sdut.onlinejudge.service.ContestService;
 import com.sdut.onlinejudge.service.ProblemService;
 import com.sdut.onlinejudge.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+//import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +30,9 @@ public class ContestServiceImpl implements ContestService {
 
     @Autowired
     private ProblemService problemService;
-
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+//
+//    @Autowired
+//    private StringRedisTemplate redisTemplate;
 
     @Override
     public List<Contest> findAll(String keyWords) {
@@ -55,9 +55,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public int deployContest(Map<String, String> contestInfo) {
-        System.out.println("fetch");
         Map<String, Object> problems = problemService.fetchProblems(contestInfo); // 题目
-        System.out.println("problem");
         Contest contest = separate(contestInfo, problems);
         System.out.println(contest);
         return contestMapper.deployContest(contest);
@@ -85,8 +83,6 @@ public class ContestServiceImpl implements ContestService {
 //            return map;
 //        } else {
         String contest = contestMapper.getContestByCid(cid);
-        System.out.println("========从数据库中获取数据========");
-        System.out.println("=============================");
 //            ops.set(ccid, contest, 60, TimeUnit.MINUTES);
         Map map = JSON.parseObject(contest, Map.class);
         return map;
@@ -106,8 +102,8 @@ public class ContestServiceImpl implements ContestService {
 //            return map;
 //        } else {
         String answer = contestMapper.getAnswerByCid(cid);
-        System.out.println("========从数据库中获取数据========");
-        System.out.println("=============================");
+//        System.out.println("========从数据库中获取数据========");
+//        System.out.println("=============================");
 //            ops.set(ccid, answer, 60, TimeUnit.MINUTES);
         Map map = JSON.parseObject(answer, Map.class);
         return map;
@@ -120,8 +116,18 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    public Map<String, Object> getContestTime(int cid) {
+        return contestMapper.getContestTime(cid);
+    }
+
+    @Override
     public int deleteContest(int cid) {
         return contestMapper.deleteContest(cid);
+    }
+
+    @Override
+    public int updateContest(Contest contest) {
+        return contestMapper.updateContest(contest);
     }
 
 
@@ -165,8 +171,6 @@ public class ContestServiceImpl implements ContestService {
             map.put("judgeProblems", judgeProblems);
             answer.setJudgeAns(jans);
         }
-        // 答案
-        System.out.println("answer = " + answer);
 
         String startTime = (String) contestInfo.get("startTime");
         String endTime = (String) contestInfo.get("endTime");
@@ -184,7 +188,6 @@ public class ContestServiceImpl implements ContestService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println("contest = " + contest);
         return contest;
     }
 

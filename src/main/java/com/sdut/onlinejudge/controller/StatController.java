@@ -1,15 +1,13 @@
 package com.sdut.onlinejudge.controller;
 
-import com.sdut.onlinejudge.model.FeedBack;
-import com.sdut.onlinejudge.model.ResultKit;
-import com.sdut.onlinejudge.model.StatKit;
-import com.sdut.onlinejudge.model.SubmitStat;
+import com.sdut.onlinejudge.model.*;
 import com.sdut.onlinejudge.service.StatService;
 import com.sdut.onlinejudge.utils.ResultCode;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,16 +30,17 @@ public class StatController {
     @GetMapping("main")
     @ResponseBody
     public ResultKit statMain() {
-        ResultKit<StatKit> resultKit = new ResultKit<>();
+        ResultKit resultKit = new ResultKit<>();
         StatKit stat = statService.getStat();
-        System.out.println(stat);
-        resultKit.setData(stat);
+        List<TrainStat> submitStat = statService.getSubmitStat(null);
+        List<Object> resp = Arrays.asList(stat, submitStat);
+        resultKit.setData(resp);
         if (stat != null) {
             resultKit.setCode(ResultCode.SUCCESS.code());
-            resultKit.setMessage("获取统计数据成功！");
+            resultKit.setMessage("获取统计数据成功");
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
-            resultKit.setMessage("获取统计数据失败！");
+            resultKit.setMessage("获取统计数据失败");
         }
         return resultKit;
     }
@@ -51,14 +50,46 @@ public class StatController {
     public ResultKit getContestStat(@PathVariable("cid") Integer cid) {
         ResultKit<List> resultKit = new ResultKit<>();
         List<SubmitStat> contestStat = statService.getStatByCid(cid);
-        System.out.println(contestStat);
         resultKit.setData(contestStat);
         if (contestStat != null) {
             resultKit.setCode(ResultCode.SUCCESS.code());
-            resultKit.setMessage("获取测试统计数据成功！");
+            resultKit.setMessage("获取测试统计数据成功");
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
-            resultKit.setMessage("获取测试统计数据失败！");
+            resultKit.setMessage("获取测试统计数据失败");
+        }
+        return resultKit;
+    }
+
+    @GetMapping("noSubmitStat/{cid}")
+    @ResponseBody
+    public ResultKit noSubmitStat(@PathVariable("cid") Integer cid) {
+        ResultKit<List> resultKit = new ResultKit<>();
+        List<SubmitStat> contestStat = statService.noSubmitStat(cid);
+        resultKit.setData(contestStat);
+        if (contestStat != null) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("获取测试统计数据成功");
+        } else {
+            resultKit.setCode(ResultCode.WRONG_UP.code());
+            resultKit.setMessage("获取测试统计数据失败");
+        }
+        return resultKit;
+    }
+
+
+    @GetMapping("uSubmit")
+    @ResponseBody
+    public ResultKit uSubmitStat(@RequestParam("uid") String uid) {
+        ResultKit resultKit = new ResultKit<>();
+        List<TrainStat> submitStat = statService.getSubmitStat(uid);
+        resultKit.setData(submitStat);
+        if (submitStat != null) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("获取统计数据成功");
+        } else {
+            resultKit.setCode(ResultCode.WRONG_UP.code());
+            resultKit.setMessage("获取统计数据失败");
         }
         return resultKit;
     }
@@ -70,21 +101,20 @@ public class StatController {
 
         List<Map> singleHint = statService.getSingleHint();
         List<Map> multiHint = statService.getMultiHint();
-
-        System.out.println("singleHint = " + singleHint);
-        System.out.println("multiHint = " + multiHint);
+        List<Map> judgeHint = statService.getJudgeHint();
 
         HashMap<String, List> map = new HashMap<>();
         map.put("singleHint", singleHint);
         map.put("multiHint", multiHint);
+        map.put("judgeHint", judgeHint);
 
         if (singleHint != null && multiHint != null) {
             resultKit.setData(map);
             resultKit.setCode(ResultCode.SUCCESS.code());
-            resultKit.setMessage("获取题目统计数据成功！");
+            resultKit.setMessage("获取题目统计数据成功");
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
-            resultKit.setMessage("获取题目统计数据失败！");
+            resultKit.setMessage("获取题目统计数据失败");
         }
         return resultKit;
     }
@@ -94,14 +124,14 @@ public class StatController {
     public ResultKit getFeedbacks() {
         ResultKit<List> resultKit = new ResultKit<>();
         List<FeedBack> feedBacks = statService.getFeedBacks();
-        System.out.println(feedBacks);
+
         resultKit.setData(feedBacks);
         if (feedBacks != null) {
             resultKit.setCode(ResultCode.SUCCESS.code());
-            resultKit.setMessage("获取反馈数据成功！");
+            resultKit.setMessage("获取反馈数据成功");
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
-            resultKit.setMessage("获取反馈数据失败！");
+            resultKit.setMessage("获取反馈数据失败");
         }
         return resultKit;
     }

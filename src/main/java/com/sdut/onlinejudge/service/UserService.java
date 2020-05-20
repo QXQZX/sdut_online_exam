@@ -1,9 +1,6 @@
 package com.sdut.onlinejudge.service;
 
-import com.sdut.onlinejudge.model.FeedBack;
-import com.sdut.onlinejudge.model.Notice;
-import com.sdut.onlinejudge.model.User;
-import com.sdut.onlinejudge.model.UserInfo;
+import com.sdut.onlinejudge.model.*;
 
 import java.util.List;
 
@@ -18,6 +15,9 @@ public interface UserService {
 
     // 获取所有用户信息
     List<UserInfo> findAllUsers(String Uname, String CollegeName);
+
+    // 获取练习统计
+    List<TrainStat> getTrainStat(String uid);
 
     // 注册
     int register(User user);

@@ -8,15 +8,15 @@ import com.sdut.onlinejudge.model.ResultKit;
 import com.sdut.onlinejudge.model.Submit;
 import com.sdut.onlinejudge.service.ContestService;
 import com.sdut.onlinejudge.service.SubmitService;
+import com.sdut.onlinejudge.utils.MainUtils;
 import com.sdut.onlinejudge.utils.ResultCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author: Devhui
@@ -28,6 +28,9 @@ import java.util.Map;
 @RequestMapping("contest")
 //@Api("测试信息接口")
 public class ContestController {
+
+    private Logger logger = LoggerFactory.getLogger(ContestController.class);
+
     @Autowired
     private ContestService contestService;
 
@@ -35,23 +38,17 @@ public class ContestController {
     private SubmitService submitService;
 
 
-    /*
-    select distinct x.from1
-from judge_problems as x,judge_problems as y
-where x.from1!=y.from1
-     */
-
     @GetMapping("all")
     public ResultKit getAllContest(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                    @RequestParam(value = "keyWords", required = false) String keyWords) {
         ResultKit<Map> resultKit = new ResultKit<>();
 
         String orderBy = "cid" + " desc";//按照（数据库）排序字段 倒序 排序
-        PageHelper.startPage(pageNum, 10, orderBy);
+        PageHelper.startPage(pageNum, 15, orderBy);
 
         List<Contest> allContest = contestService.findAll(keyWords);
         // 将查询到的数据封装到PageInfo对象
-        PageInfo<Contest> pageInfo = new PageInfo(allContest, 3);
+        PageInfo<Contest> pageInfo = new PageInfo(allContest);
         // 分割数据成功
 
         long total = pageInfo.getTotal();
@@ -60,7 +57,6 @@ where x.from1!=y.from1
         map.put("total", total);
         map.put("pageInfo", allContest);
 
-        System.out.println(allContest);
 
         resultKit.setData(map);
         resultKit.setCode(ResultCode.SUCCESS.code());
@@ -72,10 +68,18 @@ where x.from1!=y.from1
     @ResponseBody
     public ResultKit getContest(@PathVariable("cid") int cid, HttpServletRequest req) {
         Map<String, Object> contest = contestService.getContestByCid(cid);
-        ResultKit<Map> resultKit = new ResultKit<>();
-        resultKit.setData(contest);
-        resultKit.setCode(ResultCode.SUCCESS.code());
-        resultKit.setMessage("获取试题成功");
+        Map<String, Float> problemScore = contestService.getProblemScore(cid);
+        Map<String, Object> contestTime = contestService.getContestTime(cid);
+        ResultKit<Object> resultKit = new ResultKit<>();
+        if (contest != null && problemScore != null) {
+            List<Map<String, ?>> maps = Arrays.asList(contest, problemScore, contestTime);
+            resultKit.setData(maps);
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("获取试题成功");
+        } else {
+            resultKit.setCode(ResultCode.WRONG_UP.code());
+            resultKit.setMessage("获取试题失败");
+        }
         return resultKit;
     }
 
@@ -93,8 +97,8 @@ where x.from1!=y.from1
             Map<String, Object> answer = contestService.getAnswerByCid(cid); //答案信息
             Map<String, Float> problemScore = contestService.getProblemScore(cid); // 分数信息
 
-            float score = judgeCore(userAnsMap, answer, problemScore);
-            System.out.println("======得分====" + score);
+            float score = MainUtils.judgeCore(userAnsMap, answer, problemScore);
+            logger.info("用户UID={} 在测试 CID={} 的得分是 {}", uid, cid, score);
 
             Submit submit = new Submit();
             submit.setUid(uid);
@@ -105,7 +109,6 @@ where x.from1!=y.from1
 
             int i = submitService.addSubmit(submit);
             int addScore = submitService.addScore(score, uid);
-            System.out.println(i);
 
             if (i == 1 && addScore == 1) {
                 resultKit.setCode(ResultCode.SUCCESS.code());
@@ -133,6 +136,8 @@ where x.from1!=y.from1
             Map<String, Object> answerByCid = contestService.getAnswerByCid(cid); // 获取答案
             Map<String, Object> contestByCid = contestService.getContestByCid(cid); // 获取测试题目信息
             Map uSubmit = JSON.parseObject(submit.getAnswers(), Map.class); // 获取用户提交的答案
+            Map<String, Float> problemScore = contestService.getProblemScore(cid);
+
             System.out.println("submit" + submit);
             Map<String, Object> result = new HashMap<>();
             result.put("problems", contestByCid);
@@ -140,54 +145,15 @@ where x.from1!=y.from1
             result.put("uSubmit", uSubmit);
             result.put("score", submit.getScore());
             result.put("rank", submit.getRank());
-            resultKit.setMessage("获取用户提交和答案成功。");
+            result.put("problemScore", problemScore);
+            resultKit.setMessage("获取用户提交和答案成功");
             resultKit.setCode(ResultCode.SUCCESS.code());
             resultKit.setData(result);
         } else {
-            resultKit.setMessage("未提交过。");
+            resultKit.setMessage("未提交过");
             resultKit.setCode(ResultCode.WRONG_UP.code());
         }
         return resultKit;
-    }
-
-    private float judgeCore(Map uAnswer, Map answer, Map<String, Float> problemScore) {
-
-        Float singleScore = problemScore.get("singleScore");
-        Float judgeScore = problemScore.get("judgeScore");
-        Float multiScore = problemScore.get("multiScore");
-
-        float socre = 0;
-        List<String> judgeProblems = (List<String>) uAnswer.get("judgeProblems"); // 用户判断题答案
-        List<String> jAns = (List<String>) answer.get("judgeAns"); //数据库判断题答案
-        for (int i = 0; i < judgeProblems.size(); i++) {
-            String uAns = judgeProblems.get(i);
-            String tAns = jAns.get(i);
-            if (uAns.equals(tAns)) {
-                System.out.println(uAns.equals(tAns));
-                socre += judgeScore;
-            }
-        }
-        List<String> multiSelects = (List<String>) uAnswer.get("multiSelects");
-        List<String> mAns = (List<String>) answer.get("multiSelectsAns"); //数据库多选题答案
-        for (int i = 0; i < multiSelects.size(); i++) {
-            String uAns = multiSelects.get(i);
-            String tAns = mAns.get(i);
-            if (uAns.equals(tAns)) {
-                System.out.println(uAns.equals(tAns));
-                socre += multiScore;
-            }
-        }
-        List<String> singleSelects = (List<String>) uAnswer.get("singleSelects");
-        List<String> sAns = (List<String>) answer.get("singleSelectsAns"); //数据库单选题答案
-        for (int i = 0; i < singleSelects.size(); i++) {
-            String uAns = singleSelects.get(i);
-            String tAns = sAns.get(i);
-            if (uAns.equals(tAns)) {
-                System.out.println(uAns.equals(tAns));
-                socre += singleScore;
-            }
-        }
-        return socre;
     }
 
 }

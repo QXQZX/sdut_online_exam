@@ -1,10 +1,7 @@
 package com.sdut.onlinejudge.service.ServiceImpl;
 
 import com.sdut.onlinejudge.mapper.UserMapper;
-import com.sdut.onlinejudge.model.FeedBack;
-import com.sdut.onlinejudge.model.Notice;
-import com.sdut.onlinejudge.model.User;
-import com.sdut.onlinejudge.model.UserInfo;
+import com.sdut.onlinejudge.model.*;
 import com.sdut.onlinejudge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +28,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserInfo> findAllUsers(String Uname, String CollegeName) {
         return userMapper.findAllUsers(Uname, CollegeName);
+    }
+
+    @Override
+    public List<TrainStat> getTrainStat(String uid) {
+        return userMapper.getTrainStat(uid);
     }
 
     @Override

@@ -47,15 +47,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        System.out.println("我是拦截器");
         // 多个拦截器组成一个拦截器链
         // addPathPatterns 用于添加拦截规则，/**表示拦截所有请求
         // excludePathPatterns 用户排除拦截
         // ****注意前面别掉了斜杠****
 
         registry.addInterceptor(mainInterceptor).addPathPatterns("/**")
-                .excludePathPatterns("/user/login", "/user/standing", "/contest/**", "/user/feedback"
-                        , "/user/notice", "/admin/login")
+                .excludePathPatterns("/user/login", "/user/standing", "/contest/all", "/user/feedback"
+                        , "/user/notice", "/admin/login", "/train/topiclist")
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
     }
 

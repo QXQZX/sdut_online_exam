@@ -37,7 +37,6 @@ public class UserController {
         String username = (String) json.get("username");
         String password = (String) json.get("password");
 
-        System.out.println(json);
         ResultKit<Object> resultKit = new ResultKit<>();
         User user = userService.loginCheck(username, password);
         if (user != null) {
@@ -48,7 +47,7 @@ public class UserController {
             resultKit.setData(token);
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
-            resultKit.setMessage("登录失败，账号或密码错误！");
+            resultKit.setMessage("登录失败，账号或密码错误");
         }
         return resultKit;
     }
@@ -57,18 +56,22 @@ public class UserController {
     @ResponseBody
     public ResultKit getStanding(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                  @RequestParam(value = "name", required = false) String name,
-                                 @RequestParam(value = "college", required = false) String college) {
-        System.out.println(pageNum);
-        System.out.println(name);
-        System.out.println(college);
+                                 @RequestParam(value = "college", required = false) String college,
+                                 @RequestParam(value = "export", defaultValue = "false", required = false) boolean export) {
         ResultKit<Map> resultKit = new ResultKit<>();
+        if (export) {
+            List<UserInfo> allUsers = userService.findAllUsers(name, college);
+            ResultKit<Object> res = new ResultKit<>();
+            res.setData(allUsers);
+            return res;
+        }
         String orderBy = "score" + " desc";//按照（数据库）排序字段 倒序 排序
 
-        PageHelper.startPage(pageNum, 10, orderBy);
+        PageHelper.startPage(pageNum, 15, orderBy);
 
         List<UserInfo> allUsers = userService.findAllUsers(name, college);
         // 将查询到的数据封装到PageInfo对象
-        PageInfo<Contest> pageInfo = new PageInfo(allUsers, 10);
+        PageInfo<Contest> pageInfo = new PageInfo(allUsers);
         // 分割数据成功
 
         long total = pageInfo.getTotal();
@@ -101,6 +104,19 @@ public class UserController {
         return resultKit;
     }
 
+    @GetMapping("stat/{uid}")
+    @ResponseBody
+    public ResultKit<Object> getUserStat(@PathVariable("uid") String username) {
+        ResultKit<Object> resultKit = new ResultKit<>();
+        List<TrainStat> trainStat = userService.getTrainStat(username);
+        if (trainStat != null) {
+            resultKit.setCode(ResultCode.SUCCESS.code());
+            resultKit.setMessage("获取单个用户信息成功");
+            resultKit.setData(trainStat);
+        }
+        return resultKit;
+    }
+
     @PostMapping("register")
     @ResponseBody
     public ResultKit<Integer> reg(@RequestBody String param, HttpServletRequest req) {
@@ -130,14 +146,13 @@ public class UserController {
 
 
         int i = userService.updatePwd(uid, oldPwd, newPwd);
-        System.out.println("==" + i);
         ResultKit resultKit = new ResultKit<>();
         if (i == 1) {
             resultKit.setCode(ResultCode.SUCCESS.code());
             resultKit.setMessage("修改密码成功");
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
-            resultKit.setMessage("修改密码失败，请重试。");
+            resultKit.setMessage("修改密码失败，请重试");
         }
         return resultKit;
     }
@@ -160,7 +175,7 @@ public class UserController {
             resultKit.setMessage("反馈成功");
         } else {
             resultKit.setCode(ResultCode.WRONG_UP.code());
-            resultKit.setMessage("反馈失败，请重试。");
+            resultKit.setMessage("反馈失败，请重试");
         }
         return resultKit;
     }
@@ -170,7 +185,6 @@ public class UserController {
     public ResultKit getNotice() {
         ResultKit<List> resultKit = new ResultKit();
         List<Notice> notices = userService.fetchNotices();
-        System.out.println(notices);
         resultKit.setCode(ResultCode.SUCCESS.code());
         resultKit.setMessage("获取通知成功");
         resultKit.setData(notices);

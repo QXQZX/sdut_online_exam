@@ -25,6 +25,12 @@
         select * from userinfo where username=#{username}
     </select>
 
+    <select id="getTrainStat" parameterType="string" resultType="trainStat">
+        SELECT DATE_FORMAT(submitTime, '%Y-%m-%d') date, COUNT(*) count
+        FROM train WHERE uid=#{uid} AND DATEDIFF(NOW(), submitTime) &lt; 365
+        GROUP BY date
+    </select>
+
     <insert id="register" parameterType="user">
         insert into user values (#{username}, #{password})
     </insert>
@@ -42,6 +48,6 @@
     </insert>
 
     <select id="fetchNotices" resultType="notice">
-        SELECT * from admin_notice ORDER BY dateTime DESC LIMIT 3
+        SELECT * from admin_notice where status=1 ORDER BY dateTime DESC LIMIT 5
     </select>
 </mapper>

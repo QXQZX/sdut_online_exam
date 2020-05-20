@@ -3,6 +3,7 @@ package com.sdut.onlinejudge.mapper;
 import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.StatKit;
 import com.sdut.onlinejudge.model.SubmitStat;
+import com.sdut.onlinejudge.model.TrainStat;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,7 +20,13 @@ public interface StatMapper {
     StatKit getStat();
 
     // 根据cid获取单次测试统计信息
-    List<SubmitStat> getStatByCid(int cid);
+    List<SubmitStat> getStatByCid(Integer cid);
+
+    // 根据cid获取单次测试统计信息
+    List<SubmitStat> noSubmitStat(Integer cid);
+
+    // 提交量统计
+    List<TrainStat> getSubmitStat(String uid);
 
     // 获取反馈列表
     List<FeedBack> getFeedBacks();
@@ -29,4 +36,9 @@ public interface StatMapper {
 
     // 获取多选题来源统计
     List<Map> getMultiHint();
+
+    // 获取判断题来源统计
+    List<Map> getJudgeHint();
+
+
 }

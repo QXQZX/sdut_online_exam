@@ -76,5 +76,10 @@ public class AdminServiceImpl implements AdminService {
         return noticeMapper.deleteNotice(nid);
     }
 
+    @Override
+    public int updateNotice(int nid, int status) {
+        return noticeMapper.updateNotice(nid, status);
+    }
+
 
 }

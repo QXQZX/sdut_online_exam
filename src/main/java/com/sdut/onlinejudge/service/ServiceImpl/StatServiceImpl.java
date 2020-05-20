@@ -4,6 +4,7 @@ import com.sdut.onlinejudge.mapper.StatMapper;
 import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.StatKit;
 import com.sdut.onlinejudge.model.SubmitStat;
+import com.sdut.onlinejudge.model.TrainStat;
 import com.sdut.onlinejudge.service.StatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,16 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
+    public List<TrainStat> getSubmitStat(String uid) {
+        return statMapper.getSubmitStat(uid);
+    }
+
+    @Override
+    public List<SubmitStat> noSubmitStat(Integer cid) {
+        return statMapper.noSubmitStat(cid);
+    }
+
+    @Override
     public List<SubmitStat> getStatByCid(int cid) {
         return statMapper.getStatByCid(cid);
     }
@@ -47,5 +58,10 @@ public class StatServiceImpl implements StatService {
     @Override
     public List<Map> getMultiHint() {
         return statMapper.getMultiHint();
+    }
+
+    @Override
+    public List<Map> getJudgeHint() {
+        return statMapper.getJudgeHint();
     }
 }

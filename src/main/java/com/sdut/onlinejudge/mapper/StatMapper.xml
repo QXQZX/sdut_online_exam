@@ -9,8 +9,24 @@
             (select count(*) as singleSelectNum from single_selects) c,
             (select count(*) as judgeProblemNum from judge_problems) d,
             (select count(*) as multiSelectNum from multi_selects) e,
-            (select count(*) as submitNum from submits) f
+            (select sum(a) as submitNum from (select COUNT(*) a from submits union all select COUNT(*) a from train) t) f
         )
+    </select>
+
+    <select id="getSubmitStat" parameterType="string" resultType="trainStat">
+        SELECT b.date, COALESCE(a.count, 0) count FROM (
+        SELECT DATE_FORMAT(submitTime, '%Y-%m-%d') date, COUNT(*) count FROM (SELECT uid, submitTime FROM train UNION
+        ALL SELECT uid, submitTime FROM submits) t
+        WHERE DATEDIFF(NOW(), submitTime) &lt;=30
+        <if test="uid != null">
+            AND uid=#{uid}
+        </if>
+        GROUP BY date) a
+        RIGHT JOIN (
+        SELECT @s :=@s + 1 as `index`, DATE(DATE_SUB(CURRENT_DATE, INTERVAL @s DAY)) AS `date` FROM
+        mysql.help_topic,(SELECT @s := -1) temp
+        WHERE @s &lt;= 30) b
+        ON a.date=b.date ORDER BY b.date
     </select>
 
     <select id="getStatByCid" resultType="submitStat">
@@ -25,12 +41,22 @@
     </select>
 
     <select id="getSingleHint" resultType="map">
-        SELECT hint, COUNT(hint) cnt FROM single_selects
-        GROUP BY hint ORDER BY cnt DESC
+        SELECT label, COUNT(label) cnt FROM single_selects
+        GROUP BY label ORDER BY cnt DESC
     </select>
 
     <select id="getMultiHint" resultType="map">
-        SELECT hint, COUNT(hint) cnt FROM multi_selects
-        GROUP BY hint ORDER BY cnt DESC
+        SELECT label, COUNT(label) cnt FROM multi_selects
+        GROUP BY label ORDER BY cnt DESC
+    </select>
+
+    <select id="getJudgeHint" resultType="map">
+        SELECT label, COUNT(label) cnt FROM judge_problems
+        GROUP BY label ORDER BY cnt DESC
+    </select>
+
+    <select id="noSubmitStat" resultType="submitStat">
+        SELECT username, `name`, college, gender  FROM  `userinfo`  WHERE NOT
+        EXISTS(SELECT uid FROM submits WHERE cid=#{cid} and userinfo.username=submits.uid)
     </select>
 </mapper>

@@ -39,4 +39,7 @@ public interface AdminService {
 
     // 删除通知
     int deleteNotice(int nid);
+
+    // 更改通知状态
+    int updateNotice(int nid, int status);
 }

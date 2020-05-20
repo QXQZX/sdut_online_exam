@@ -26,10 +26,20 @@
     </select>
 
     <select id="getProblemScore" resultType="map" parameterType="int">
-        select singleScore, multiScore, judgeScore from contests where cid=#{cid}
+        select singleScore, multiScore, judgeScore, startTime, endTime from contests where cid=#{cid}
+    </select>
+
+    <select id="getContestTime" resultType="map" parameterType="int">
+        select startTime, endTime from contests where cid=#{cid}
     </select>
 
     <delete id="deleteContest" parameterType="int">
         delete from contests where cid=#{cid}
     </delete>
+
+    <update id="updateContest">
+        update contests
+        set cname=#{cname}, startTime=#{startTime}, endTime=#{endTime}
+        where cid=#{cid}
+    </update>
 </mapper>

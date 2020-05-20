@@ -3,6 +3,7 @@ package com.sdut.onlinejudge.service;
 import com.sdut.onlinejudge.model.FeedBack;
 import com.sdut.onlinejudge.model.StatKit;
 import com.sdut.onlinejudge.model.SubmitStat;
+import com.sdut.onlinejudge.model.TrainStat;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,12 @@ public interface StatService {
     // 获取统计信息
     StatKit getStat();
 
+    // 提交量统计
+    List<TrainStat> getSubmitStat(String uid);
+
+    // 根据cid获取单次测试统计信息
+    List<SubmitStat> noSubmitStat(Integer cid);
+
     // 根据cid获取单次测试统计信息
     List<SubmitStat> getStatByCid(int cid);
 
@@ -28,4 +35,7 @@ public interface StatService {
 
     // 获取多选题来源统计
     List<Map> getMultiHint();
+
+    // 获取判断题来源统计
+    List<Map> getJudgeHint();
 }

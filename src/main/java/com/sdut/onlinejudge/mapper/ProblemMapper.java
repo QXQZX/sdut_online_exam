@@ -16,11 +16,11 @@ import java.util.List;
 @Repository
 public interface ProblemMapper {
     // 随机抽题
-    List<SingleSelect> fetchSingleSelects(int count);
+    List<SingleSelect> fetchSingleSelects(int count, String label);
 
-    List<MultiSelect> fetchMultiSelects(int count);
+    List<MultiSelect> fetchMultiSelects(int count, String label);
 
-    List<JudgeProblem> fetchJudgeProblem(int count);
+    List<JudgeProblem> fetchJudgeProblem(int count, String label);
 
     // 目的性抽取题目
     List<SingleSelect> getSingleSelectsSelf(@Param("ids") List ids);
@@ -49,4 +49,5 @@ public interface ProblemMapper {
     int delSingleSelect(String dpid);
 
     int delMultiSelect(String mpid);
+
 }

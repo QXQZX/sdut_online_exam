@@ -66,9 +66,10 @@ public class OnlinejudgeApplicationTests {
                 for (int j = row.getFirstCellNum(); j < row.getLastCellNum(); j++) {
                     Cell cell = row.getCell(j);
                     cell.setCellType(CellType.STRING);
+                    System.out.print(i + " " + cell.getCellType() + " ");
                 }
-
-                System.out.println(row.getCell(6).getStringCellValue());
+                System.out.println();
+//                System.out.println(row.getCell(6).getStringCellValue());
 
             }
 

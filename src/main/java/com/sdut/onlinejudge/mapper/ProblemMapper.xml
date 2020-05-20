@@ -3,28 +3,40 @@
 <mapper namespace="com.sdut.onlinejudge.mapper.ProblemMapper">
 
 
-    <select id="fetchSingleSelects" parameterType="int" resultType="singleSelect">
-        SELECT * FROM single_selects WHERE
-        spid >= (SELECT floor(RAND() * (SELECT MAX(spid) FROM single_selects)))
-        ORDER BY spid LIMIT 0, #{count}
+    <select id="fetchSingleSelects" resultType="singleSelect">
+        SELECT * FROM single_selects
+        <where>
+            <if test="label != null">
+                label=#{label}
+            </if>
+        </where>
+        ORDER BY RAND() LIMIT 0, #{count}
     </select>
 
-    <select id="fetchMultiSelects" parameterType="int" resultType="multiSelect">
-        SELECT * FROM multi_selects WHERE
-        mpid >= (SELECT floor(RAND() * (SELECT MAX(mpid) FROM multi_selects)))
-        ORDER BY mpid LIMIT 0, #{count}
+    <select id="fetchMultiSelects" resultType="multiSelect">
+        SELECT * FROM multi_selects
+        <where>
+            <if test="label != null">
+                label=#{label}
+            </if>
+        </where>
+        ORDER BY RAND() LIMIT 0, #{count}
     </select>
 
-    <select id="fetchJudgeProblem" parameterType="int" resultType="judgeProblem">
-        SELECT * FROM judge_problems WHERE
-        jpid >= (SELECT floor(RAND() * (SELECT MAX(jpid) FROM judge_problems)))
-        ORDER BY jpid LIMIT 0, #{count}
+    <select id="fetchJudgeProblem" resultType="judgeProblem">
+        SELECT * FROM judge_problems
+        <where>
+            <if test="label != null">
+                label=#{label}
+            </if>
+        </where>
+        ORDER BY RAND() LIMIT 0, #{count}
     </select>
 
 
     <select id="getSingleSelectsSelf" parameterType="list" resultType="singleSelect">
 
-    select * from single_selects
+        select * from single_selects
         where spid in
         <foreach collection="ids" item="name" index="index" open="(" close=")" separator=",">
             #{name}
@@ -53,7 +65,7 @@
         <where>
             <if test="keyWords != null">
                 <bind name="keywords" value="'%' + keyWords + '%'"/>
-                and hint like #{keywords}
+                and label like #{keywords}
             </if>
         </where>
     </select>
@@ -63,7 +75,7 @@
         <where>
             <if test="keyWords != null">
                 <bind name="keywords" value="'%' + keyWords + '%'"/>
-                and hint like #{keywords}
+                and label like #{keywords}
             </if>
         </where>
     </select>
@@ -73,7 +85,7 @@
         <where>
             <if test="keyWords != null">
                 <bind name="keywords" value="'%' + keyWords + '%'"/>
-                and hint like #{keywords}
+                and label like #{keywords}
             </if>
         </where>
     </select>
@@ -84,13 +96,13 @@
     </insert>
 
     <insert id="addSingleSelect" parameterType="singleSelect">
-        insert into single_selects(title, optionA, optionB, optionC, optionD, optionE, answer, hint)
-        values (#{title}, #{optionA}, #{optionB}, #{optionC}, #{optionD}, #{optionE}, #{answer}, #{hint})
+        insert into single_selects(title, optionA, optionB, optionC, optionD, optionE, answer, hint, label)
+        values (#{title}, #{optionA}, #{optionB}, #{optionC}, #{optionD}, #{optionE}, #{answer}, #{hint}, #{label})
     </insert>
 
     <insert id="addMultiSelect" parameterType="multiSelect">
-        insert into multi_selects(title, optionA, optionB, optionC, optionD, optionE, answer, hint)
-        values (#{title}, #{optionA}, #{optionB}, #{optionC}, #{optionD}, #{optionE}, #{answer}, #{hint})
+        insert into multi_selects(title, optionA, optionB, optionC, optionD, optionE, answer, hint, label)
+        values (#{title}, #{optionA}, #{optionB}, #{optionC}, #{optionD}, #{optionE}, #{answer}, #{hint}, #{label})
     </insert>
 
     <delete id="delJudgeProblem" parameterType="string">

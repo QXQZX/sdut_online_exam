@@ -1,7 +1,8 @@
 package com.sdut.onlinejudge.config;
 
-import javax.sql.DataSource;
-
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,9 +11,7 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.support.http.StatViewServlet;
-import com.alibaba.druid.support.http.WebStatFilter;
+import javax.sql.DataSource;
 
 @Configuration
 public class DruidConfiguration {
@@ -44,7 +43,7 @@ public class DruidConfiguration {
         servletRegistrationBean.addInitParameter("deny", "192.168.1.73");
         // 登录查看信息的账号密码.
         servletRegistrationBean.addInitParameter("loginUsername", "admin");
-        servletRegistrationBean.addInitParameter("loginPassword", "password");
+        servletRegistrationBean.addInitParameter("loginPassword", "123456");
         // 是否能够重置数据.
         servletRegistrationBean.addInitParameter("resetEnable", "false");
         return servletRegistrationBean;

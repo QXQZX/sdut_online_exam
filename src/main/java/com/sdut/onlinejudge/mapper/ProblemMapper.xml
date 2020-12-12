@@ -91,8 +91,8 @@
     </select>
 
     <insert id="addJudgeProblem" parameterType="judgeProblem">
-        insert into judge_problems(title, optionT, optionF, answer, hint)
-        values (#{title}, "正确", "错误", #{answer}, #{hint})
+        insert into judge_problems(title, optionT, optionF, answer, hint, label)
+        values (#{title}, "正确", "错误", #{answer}, #{hint}, #{label})
     </insert>
 
     <insert id="addSingleSelect" parameterType="singleSelect">

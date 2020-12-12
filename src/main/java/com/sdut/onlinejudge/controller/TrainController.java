@@ -94,9 +94,10 @@ public class TrainController {
         return resultKit;
     }
 
-    @PostMapping("submit/tid/{tid}")
+    @PostMapping("submit/tid/{tid}/uid/{uid}")
     @ResponseBody
     public ResultKit submitTrain(@PathVariable("tid") Integer tid,
+                                 @PathVariable("uid") String uid,
                                  @RequestBody String userAns) {
         ResultKit<Float> resultKit = new ResultKit();
         Map userAnsMap = JSON.parseObject(userAns, Map.class);
@@ -108,16 +109,17 @@ public class TrainController {
         trainScore.put("multiScore", ProblemConstant.trainMultiScore);
 
         float score = MainUtils.judgeCore(userAnsMap, answer, trainScore);
-        logger.info("用户在训练 tid={} 的得分是 {}", tid, score);
+        logger.info("用户uid={}在训练 tid={} 的得分是 {}", uid, tid, score);
 
         Train train = new Train();
+        train.setUid(uid);
         train.setTid(tid);
         train.setUAnswers(userAns);
         train.setScore(score);
         train.setCostTime((Integer) userAnsMap.get("costTime"));
 
         int i = trainService.trainSubmit(train);
-        if (i == 1) {
+        if (i == 2) { // 加分+提交 记录两个操作
             resultKit.setCode(ResultCode.SUCCESS.code());
             resultKit.setMessage("判题成功");
             resultKit.setData(score);

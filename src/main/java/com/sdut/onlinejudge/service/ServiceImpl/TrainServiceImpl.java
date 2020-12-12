@@ -2,6 +2,7 @@ package com.sdut.onlinejudge.service.ServiceImpl;
 
 import com.alibaba.fastjson.JSON;
 import com.sdut.onlinejudge.mapper.ProblemMapper;
+import com.sdut.onlinejudge.mapper.SubmitMapper;
 import com.sdut.onlinejudge.mapper.TrainMapper;
 import com.sdut.onlinejudge.model.*;
 import com.sdut.onlinejudge.service.ProblemService;
@@ -10,8 +11,12 @@ import com.sdut.onlinejudge.utils.DateUtil;
 import com.sdut.onlinejudge.utils.ProblemConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Devhui
@@ -21,6 +26,7 @@ import java.util.*;
  */
 
 @Service
+@Transactional
 public class TrainServiceImpl implements TrainService {
 
     @Autowired
@@ -28,6 +34,9 @@ public class TrainServiceImpl implements TrainService {
 
     @Autowired
     private ProblemMapper problemMapper;
+
+    @Autowired
+    private SubmitMapper submitMapper;
 
     @Autowired
     private ProblemService problemService;
@@ -64,7 +73,9 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     public int trainSubmit(Train train) {
-        return trainMapper.trainSubmit(train);
+        int addScore = submitMapper.addScore(train.getScore(), train.getUid());
+        int submit = trainMapper.trainSubmit(train);
+        return submit + addScore;
     }
 
     @Override

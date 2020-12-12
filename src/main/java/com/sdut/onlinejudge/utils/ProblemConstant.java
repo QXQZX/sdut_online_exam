@@ -20,11 +20,14 @@ public class ProblemConstant {
 
     // 单选题数量
     public static final int trainSingleCount = 20;
+//    public static final int trainSingleCount = 2;
 
     // 多选题数量
     public static final int trainMultiCount = 15;
+//    public static final int trainMultiCount = 1;
 
     // 判断题数量
     public static final int trainJudgeCount = 15;
+//    public static final int trainJudgeCount = 1;
 
 }

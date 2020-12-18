@@ -60,32 +60,41 @@
     </select>
 
 
-    <select id="getSingleSelects" parameterType="string" resultType="singleSelect">
+    <select id="getSingleSelects" resultType="singleSelect">
         select * from single_selects
         <where>
             <if test="keyWords != null">
                 <bind name="keywords" value="'%' + keyWords + '%'"/>
-                and label like #{keywords}
+                and title like #{keywords}
+            </if>
+            <if test="label != null">
+                and label=#{label}
             </if>
         </where>
     </select>
 
-    <select id="getMultiSelects" parameterType="string" resultType="multiSelect">
+    <select id="getMultiSelects" resultType="multiSelect">
         select * from multi_selects
         <where>
             <if test="keyWords != null">
                 <bind name="keywords" value="'%' + keyWords + '%'"/>
-                and label like #{keywords}
+                and title like #{keywords}
+            </if>
+            <if test="label != null">
+                and label=#{label}
             </if>
         </where>
     </select>
 
-    <select id="getJudgeProblem" parameterType="string" resultType="judgeProblem">
+    <select id="getJudgeProblem" resultType="judgeProblem">
         select * from judge_problems
         <where>
             <if test="keyWords != null">
                 <bind name="keywords" value="'%' + keyWords + '%'"/>
-                and label like #{keywords}
+                and title like #{keywords}
+            </if>
+            <if test="label != null">
+                and label=#{label}
             </if>
         </where>
     </select>

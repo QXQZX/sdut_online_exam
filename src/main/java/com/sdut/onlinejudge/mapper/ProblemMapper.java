@@ -30,11 +30,11 @@ public interface ProblemMapper {
     List<JudgeProblem> getJudgeProblemSelf(@Param("ids") List ids);
 
     // 拉取所有题目
-    List<SingleSelect> getSingleSelects(String keyWords);
+    List<SingleSelect> getSingleSelects(@Param("keyWords") String keyWords, @Param("label") String label);
 
-    List<MultiSelect> getMultiSelects(String keyWords);
+    List<MultiSelect> getMultiSelects(@Param("keyWords") String keyWords, @Param("label") String label);
 
-    List<JudgeProblem> getJudgeProblem(String keyWords);
+    List<JudgeProblem> getJudgeProblem(@Param("keyWords") String keyWords, @Param("label") String label);
 
     // 添加题目
     int addJudgeProblem(JudgeProblem judgeProblem);

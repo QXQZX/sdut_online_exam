@@ -100,24 +100,25 @@ public class AdminController {
     @ResponseBody
     public ResultKit getProblems(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                  @RequestParam(value = "type", defaultValue = "single") String type,
-                                 @RequestParam(value = "keyWords", required = false) String keyWords) {
+                                 @RequestParam(value = "keyWords", required = false) String keyWords,
+                                 @RequestParam(value = "label", required = false) String label) {
         ResultKit<Map> resultKit = new ResultKit<>();
         PageHelper.startPage(pageNum, 10);
         List list = null;
         long total = 0;
         Map<String, Object> map = new HashMap<>();
         if (type.equals("single")) {
-            list = problemService.getSingleSelects(keyWords);
+            list = problemService.getSingleSelects(keyWords, label);
             PageInfo<SingleSelect> pageInfo = new PageInfo(list, 10);
             total = pageInfo.getTotal();
 
         } else if (type.equals("judge")) {
-            list = problemService.getJudgeProblem(keyWords);
+            list = problemService.getJudgeProblem(keyWords, label);
             PageInfo<JudgeProblem> pageInfo = new PageInfo(list, 10);
             total = pageInfo.getTotal();
 
         } else if (type.equals("multi")) {
-            list = problemService.getMultiSelects(keyWords);
+            list = problemService.getMultiSelects(keyWords, label);
             PageInfo<MultiSelect> pageInfo = new PageInfo(list, 10);
             total = pageInfo.getTotal();
         }

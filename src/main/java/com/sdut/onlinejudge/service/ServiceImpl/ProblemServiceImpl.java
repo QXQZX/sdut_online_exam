@@ -72,18 +72,18 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public List<SingleSelect> getSingleSelects(String keyWords) {
-        return problemMapper.getSingleSelects(keyWords);
+    public List<SingleSelect> getSingleSelects(String keyWords, String label) {
+        return problemMapper.getSingleSelects(keyWords, label);
     }
 
     @Override
-    public List<MultiSelect> getMultiSelects(String keyWords) {
-        return problemMapper.getMultiSelects(keyWords);
+    public List<MultiSelect> getMultiSelects(String keyWords, String label) {
+        return problemMapper.getMultiSelects(keyWords, label);
     }
 
     @Override
-    public List<JudgeProblem> getJudgeProblem(String keyWords) {
-        return problemMapper.getJudgeProblem(keyWords);
+    public List<JudgeProblem> getJudgeProblem(String keyWords, String label) {
+        return problemMapper.getJudgeProblem(keyWords, label);
     }
 
     @Override

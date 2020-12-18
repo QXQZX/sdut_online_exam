@@ -22,13 +22,13 @@ public interface ProblemService {
     Map<String, Object> fetchProblemsSelf(Map<String, Object> contestInfo);
 
     // 拉取单选题
-    List<SingleSelect> getSingleSelects(String keyWords);
+    List<SingleSelect> getSingleSelects(String keyWords, String label);
 
     // 拉取多选题
-    List<MultiSelect> getMultiSelects(String keyWords);
+    List<MultiSelect> getMultiSelects(String keyWords, String label);
 
     // 拉取判断选题
-    List<JudgeProblem> getJudgeProblem(String keyWords);
+    List<JudgeProblem> getJudgeProblem(String keyWords, String label);
 
 
     // 添加单选题

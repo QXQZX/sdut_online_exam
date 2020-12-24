@@ -52,7 +52,6 @@ public class MainUtils {
             String uAns = judgeProblems.get(i);
             String tAns = jAns.get(i);
             if (uAns.equals(tAns)) {
-                System.out.println(uAns.equals(tAns));
                 socre += judgeScore;
             }
         }
@@ -62,7 +61,6 @@ public class MainUtils {
             String uAns = multiSelects.get(i);
             String tAns = mAns.get(i);
             if (uAns.equals(tAns)) {
-                System.out.println(uAns.equals(tAns));
                 socre += multiScore;
             }
         }
@@ -72,7 +70,6 @@ public class MainUtils {
             String uAns = singleSelects.get(i);
             String tAns = sAns.get(i);
             if (uAns.equals(tAns)) {
-                System.out.println(uAns.equals(tAns));
                 socre += singleScore;
             }
         }

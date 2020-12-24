@@ -7,6 +7,8 @@ import com.sdut.onlinejudge.model.SingleSelect;
 import com.sdut.onlinejudge.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -19,7 +21,7 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class ProblemServiceImpl implements ProblemService {
     @Autowired
     private ProblemMapper problemMapper;
@@ -87,31 +89,37 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int addSingleSelects(SingleSelect ss) {
         return problemMapper.addSingleSelect(ss);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int addMultiSelects(MultiSelect ms) {
         return problemMapper.addMultiSelect(ms);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int addJudgeProblem(JudgeProblem jp) {
         return problemMapper.addJudgeProblem(jp);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int delJudgeProblem(String jpid) {
         return problemMapper.delJudgeProblem(jpid);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int delSingleSelect(String spid) {
         return problemMapper.delSingleSelect(spid);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int delMultiSelect(String mpid) {
         return problemMapper.delMultiSelect(mpid);
     }

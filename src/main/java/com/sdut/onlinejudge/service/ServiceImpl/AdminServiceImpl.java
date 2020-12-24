@@ -3,10 +3,14 @@ package com.sdut.onlinejudge.service.ServiceImpl;
 import com.sdut.onlinejudge.mapper.AdminMapper;
 import com.sdut.onlinejudge.mapper.NoticeMapper;
 import com.sdut.onlinejudge.mapper.ProblemMapper;
-import com.sdut.onlinejudge.model.*;
+import com.sdut.onlinejudge.model.Admin;
+import com.sdut.onlinejudge.model.Notice;
+import com.sdut.onlinejudge.model.UserInfo;
 import com.sdut.onlinejudge.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,7 +23,7 @@ import java.util.List;
  */
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class AdminServiceImpl implements AdminService {
     @Autowired
     AdminMapper adminMapper;
@@ -36,21 +40,25 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int deleteUser(String username) {
         return adminMapper.deleteUser(username);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int resetPwd(String username) {
         return adminMapper.resetPwd(username);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int updateUserInfo(UserInfo userInfo) {
         return adminMapper.updateUserInfo(userInfo);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int addUser(UserInfo userInfo) {
         adminMapper.addUser(userInfo.getUsername());
         return adminMapper.addUserInfo(userInfo);
@@ -67,16 +75,19 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int addNotice(Notice notice) {
         return noticeMapper.addNotice(notice);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int deleteNotice(int nid) {
         return noticeMapper.deleteNotice(nid);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int updateNotice(int nid, int status) {
         return noticeMapper.updateNotice(nid, status);
     }

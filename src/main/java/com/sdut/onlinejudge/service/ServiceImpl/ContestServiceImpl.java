@@ -7,8 +7,9 @@ import com.sdut.onlinejudge.service.ContestService;
 import com.sdut.onlinejudge.service.ProblemService;
 import com.sdut.onlinejudge.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
@@ -16,13 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+//import org.springframework.data.redis.core.StringRedisTemplate;
+
 /**
  * @Author: Devhui
  * @Date: 2019-11-28 17:05
  * @Version 1.0
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class ContestServiceImpl implements ContestService {
 
     @Autowired
@@ -54,6 +57,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int deployContest(Map<String, String> contestInfo) {
         Map<String, Object> problems = problemService.fetchProblems(contestInfo); // 题目
         Contest contest = separate(contestInfo, problems);
@@ -62,6 +66,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int deployContestSelf(Map<String, Object> contestInfo) {
         Map<String, Object> problems = problemService.fetchProblemsSelf(contestInfo);
         Contest contest = separate(contestInfo, problems);
@@ -121,11 +126,13 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int deleteContest(int cid) {
         return contestMapper.deleteContest(cid);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int updateContest(Contest contest) {
         return contestMapper.updateContest(contest);
     }

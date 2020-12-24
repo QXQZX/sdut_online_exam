@@ -11,6 +11,8 @@ import com.sdut.onlinejudge.utils.DateUtil;
 import com.sdut.onlinejudge.utils.ProblemConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.Map;
  */
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class TrainServiceImpl implements TrainService {
 
     @Autowired
@@ -59,6 +61,7 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int deployTrain(String uid) {
         HashMap<String, String> count = new HashMap<>();
         count.put("singleCount", String.valueOf(ProblemConstant.trainSingleCount));
@@ -72,6 +75,7 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int trainSubmit(Train train) {
         int addScore = submitMapper.addScore(train.getScore(), train.getUid());
         int submit = trainMapper.trainSubmit(train);
@@ -81,7 +85,6 @@ public class TrainServiceImpl implements TrainService {
     @Override
     public Map<String, String> checkSubmit(Integer tid) {
         Map<String, String> submit = trainMapper.checkSubmit(tid);
-
         return submit;
     }
 

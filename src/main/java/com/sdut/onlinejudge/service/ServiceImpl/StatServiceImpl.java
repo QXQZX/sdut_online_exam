@@ -20,7 +20,7 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class StatServiceImpl implements StatService {
     @Autowired
     private StatMapper statMapper;

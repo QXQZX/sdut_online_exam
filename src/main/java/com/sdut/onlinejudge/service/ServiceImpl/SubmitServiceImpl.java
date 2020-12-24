@@ -5,6 +5,8 @@ import com.sdut.onlinejudge.model.Submit;
 import com.sdut.onlinejudge.service.SubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -13,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @Version 1.0
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class SubmitServiceImpl implements SubmitService {
     @Autowired
     private SubmitMapper submitMapper;
@@ -29,11 +31,13 @@ public class SubmitServiceImpl implements SubmitService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int addSubmit(Submit submit) {
         return submitMapper.addSubmit(submit);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
     public int addScore(float score, String username) {
         return submitMapper.addScore(score, username);
     }
